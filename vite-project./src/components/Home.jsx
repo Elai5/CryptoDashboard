@@ -11,7 +11,7 @@ const Home = () => {
     setDisplayCoin(allCoin);
   }, [allCoin]);
 
-  const totalInvested = 2500;
+  const totalInvested = 45789.25;
   const userPortfolio = [
     {
       id: "bitcoin",
@@ -56,19 +56,19 @@ const Home = () => {
         <h1 className="text-2xl">Welcome back, James</h1>
         <p className="text-base">Here's how your crypto is doing today</p>
         <div className="w-full grid grid-cols-[2fr_2fr_2fr] px-2 py-2 gap-2">
-          <div className="flex flex-col bg-blue-300 border-1 border-gray-700 rounded-md px-5 py-3">
-            <p>Total Invested</p>
-            <span className="bold text-2xl">
+          <div className="flex flex-col border-1 border-gray-300 rounded-md px-5 py-3">
+            <p className="text-sm text-[hsl(60,1%,52%)] mb-1">Total Invested</p>
+            <span className="font-extrabold text-base">
               $
               {totalInvested.toLocaleString(undefined, {
                 minimumFractionDigits: 2,
               })}
             </span>
-            <small>Across all assets</small>
+            <small className="text-xs ">Across all assets</small>
           </div>
-          <div className="flex flex-col bg-blue-300 border-1 border-gray-700 rounded-md px-5 py-3">
-            <p>Current Value</p>
-            <span className="bold text-2xl">
+          <div className="flex flex-col border-1 border-gray-300 rounded-md px-5 py-3">
+            <p className="text-sm text-[hsl(60,1%,52%)] mb-1">Current Value</p>
+            <span className="font-extrabold text-base">
               $
               {currentValue.toLocaleString(undefined, {
                 minimumFractionDigits: 2,
@@ -85,12 +85,14 @@ const Home = () => {
             {/* <p className="text-xs">+11.90%</p> */}
             <small>All-time portfolio gain</small>
           </div>
-          <div className="flex flex-col bg-blue-300 border-1 border-gray-700 rounded-md px-5 py-3">
-            <p>Today's Profit/Loss</p>
+          <div className="flex flex-col border-1 border-gray-300 rounded-md px-5 py-3">
+            <p className="text-sm text-[hsl(60,1%,52%)] mb-1">
+              Today's Profit/Loss
+            </p>
             {/* <span className="bold text-2xl">$ 1,234.56</span> */}
             <span
-              className="bold text-2xl"
-              style={{ color: todayChange >= 0 ? "green" : "red" }}
+              className="font-extrabold text-base"
+              //   style={{ color: todayChange >= 0 ? "green" : "red" }}
             >
               $
               {todayChange.toLocaleString(undefined, {
@@ -98,7 +100,7 @@ const Home = () => {
               })}
             </span>
             <p
-              className="text-xs"
+              className="text-xs "
               style={{ color: todayChange >= 0 ? "green" : "red" }}
             >
               {todayChange >= 0 ? "+" : ""}
@@ -110,13 +112,13 @@ const Home = () => {
           </div>
         </div>
         <div className="w-full grid grid-cols-[2fr_1fr] px-2 gap-3 ">
-          <div className="bg-blue-300 chart rounded-md border-1">
+          <div className="bg-blue-300 chart rounded-md border-1 border-gray-300">
             HELLO WORLD
           </div>
-          <div className="flex flex-col border rounded-md ">
+          <div className="flex flex-col border border-gray-300 rounded-md ">
             <h2 className="text-2xl py-5 px-3">Quick Stat</h2>
             {portfolioCoins.map((coin) => (
-              <div className="flex items-center border-b border-gray-900 px-2">
+              <div className="flex items-center border-b border-gray-300 px-2">
                 <div
                   key={coin.id}
                   className="w-full grid grid-cols-[1fr_3fr_2fr] gap-3 "
@@ -170,9 +172,11 @@ const Home = () => {
           </div>
         </div>
         <div className="flex items-center px-2">
-          <div className="w-full border rounded-md flex flex-col gap-3">
-            <h2 className="text-xl">Top Currencies By Market Cap</h2>
-            <div className="w-full grid grid-cols-[70px_2fr_1fr_1fr_1fr] gap-4 bg-gradient-to-r from-blue-400 to-blue-900 px-2 py-2">
+          <div className="w-full border border-gray-300 rounded-md flex flex-col gap-3">
+            <h2 className="text-base font-semibold px-5 mt-4">
+              Top Cryptocurrencies by Market Cap
+            </h2>
+            <div className="w-full grid grid-cols-[70px_2fr_1fr_1fr_1fr] gap-4 bg-gray-100 px-2 py-2 text-[hsl(60,1%,52%)] text-sm">
               <p className="text-sm">Rank</p>
               <p className="text-sm">Coin</p>
               <p className="text-sm">Price</p>
@@ -182,7 +186,7 @@ const Home = () => {
             {displayCoin.slice(0, 10).map((item, index) => (
               <div className="w-full flex items-center">
                 <div
-                  className="w-full grid grid-cols-[70px_2fr_1fr_1fr_1fr] gap-4  border-b border-gray-500 "
+                  className="w-full grid grid-cols-[70px_2fr_1fr_1fr_1fr] gap-4 border-b border-gray-300 "
                   key={index}
                 >
                   <p className="flex items-center px-2">

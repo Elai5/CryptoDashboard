@@ -3,7 +3,7 @@
 import { MdDashboard } from "react-icons/md";
 import React, { useContext } from "react";
 import { assets } from "../assets/assets";
-import { MdSearch } from "react-icons/md";
+import { BiSearch } from "react-icons/bi";
 import { FaBell } from "react-icons/fa";
 import Home from "./Home";
 import Sidebar from "./Sidebar";
@@ -40,11 +40,12 @@ const Navbar = () => {
           <img className="size-8" src={assets.logo} alt="" />
           <span className="text-xl">BitFlow</span>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
           <form
             action=""
-            className="flex justify-between items-center border-2 border-black rounded w-82 h-8  bg-white text-black"
+            className="flex items-center border-1 border-gray-300 rounded h-7  bg-white text-black px-2"
           >
+            <BiSearch className="text-gray-400 flex items-center" />
             <input
               type="text"
               name=""
@@ -52,17 +53,17 @@ const Navbar = () => {
               placeholder="Search crypto,markets..."
               className="px-4 text-xs border-2 border-none outline-none rounded-md"
             />
-            <button
+            {/* <button
               type="submit"
               className="border-1 border-gray-400 rounded text-xs bg-purple-700 text-white px-4 py-1"
             >
               Search
-            </button>
+            </button> */}
           </form>
           <select
             name=""
             id=""
-            // onChange={currencyHandler}
+            onChange={currencyHandler}
             className="hover:cursor-pointer hover:border-none outline-none"
           >
             <option value="usd">USD</option>
