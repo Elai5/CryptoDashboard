@@ -62,7 +62,7 @@ Bitflow is a frontend cryptocurrency dashboard that **assumes a user is logged i
 ## 🚀 Getting Started
 
 ```bash
-git clone https://github.com/yourusername/cryptodash.git
+git clone https://github.com/Elai5/CryptoDashboard.git
 cd viteproject
 npm install
 npm run dev
