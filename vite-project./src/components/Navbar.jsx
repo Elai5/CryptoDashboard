@@ -59,8 +59,14 @@ const Navbar = () => {
     <div className="w-full flex flex-col gap-1">
       <div className="w-full flex items-center justify-between px-5 py-2 border-b-1 border-gray-300 ">
         <div className="flex w-1/3 gap-2">
-          <img className="size-8" src={assets.logo} alt="" />
-          <span className="text-2xl font-tertiary font-semibold">BitFlow</span>
+          <img
+            className="hidden md:flex md:size-8 "
+            src={assets.logo}
+            alt=""
+          />
+          <span className="flex md:text-2xl font-tertiary font-semibold md:font-normal">
+            BitFlow
+          </span>
         </div>
         <div className="flex items-center gap-3">
           <form
@@ -107,7 +113,7 @@ const Navbar = () => {
           <img
             src={assets.avator}
             alt=""
-            className="w-8 rounded-full object-cover"
+            className="size-7 md:size-10 rounded-full object-cover"
           />
         </div>
       </div>
