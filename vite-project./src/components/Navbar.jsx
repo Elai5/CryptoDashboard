@@ -60,7 +60,7 @@ const Navbar = () => {
       <div className="w-full flex items-center justify-between px-5 py-2 border-b-1 border-gray-300 ">
         <div className="flex w-1/3 gap-2">
           <img className="size-8" src={assets.logo} alt="" />
-          <span className="text-xl">BitFlow</span>
+          <span className="text-2xl font-tertiary font-semibold">BitFlow</span>
         </div>
         <div className="flex items-center gap-3">
           <form

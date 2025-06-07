@@ -5,4 +5,5 @@
 @theme {
   --font-primary: "Poppins", sans-serif;
   --font-secondary: "Inter", sans-serif;
+  --font-tertiary: "Major Mono Display", monospace;
 }
