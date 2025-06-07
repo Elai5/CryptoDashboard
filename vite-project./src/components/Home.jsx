@@ -35,12 +35,25 @@ const Home = () => {
                 Bitcoin
                 <span>BTC</span>
               </p>
-              <p className="price flex flex-col text-right
-              ">
+              <p
+                className="price flex flex-col text-right
+              "
+              >
                 {" "}
                 $45,6876.34
                 <span className="stats">+2.14%</span>
               </p>
+            </div>
+          </div>
+        </div>
+        <div className="flex justify-center px-2 py-3">
+          <div className="w-full">
+            <div className="w-full grid grid-cols-[70px_2fr_1fr_1fr_1fr] gap-4 bg-gradient-to-r from-blue-400 to-blue-900 px-2 py-2">
+              <p className="text-sm">Rank</p>
+              <p className="text-sm">Coin</p>
+              <p className="text-sm">Price</p>
+              <p className="text-sm">Market Cap</p>
+              <p className="text-sm">24hr Change</p>
             </div>
           </div>
         </div>

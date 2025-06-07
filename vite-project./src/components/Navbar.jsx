@@ -1,15 +1,38 @@
 /** @format */
 
-import { VStack, Link, List, ListItem } from "@chakra-ui/react";
 import { MdDashboard } from "react-icons/md";
-import React from "react";
+import React, { useContext } from "react";
 import { assets } from "../assets/assets";
 import { MdSearch } from "react-icons/md";
 import { FaBell } from "react-icons/fa";
 import Home from "./Home";
 import Sidebar from "./Sidebar";
+import { CoinContext } from "../context/CoinContext";
 
 const Navbar = () => {
+  const { setCurrency } = useContext(CoinContext);
+
+  const currencyHandler = (event) => {
+    switch (event.target.value) {
+      case "usd": {
+        setCurrency({ name: "usd", symbol: "$" });
+        break;
+      }
+      case "": {
+        setCurrency({ name: "ksh", symbol: "KES" });
+        break;
+      }
+      case "eur": {
+        setCurrency({ name: "eur", symbol: "€" });
+        break;
+      }
+      default: {
+        setCurrency({ name: "usd", symbol: "$" });
+        break;
+      }
+    }
+  };
+  // const { setCurrency } = useContext(CoinContext);
   return (
     <div className="flex flex-col">
       <div className="flex items-center justify-between px-5 py-2 border-b-1 ">
@@ -36,6 +59,16 @@ const Navbar = () => {
               Search
             </button>
           </form>
+          <select
+            name=""
+            id=""
+            // onChange={currencyHandler}
+            className="hover:cursor-pointer hover:border-none outline-none"
+          >
+            <option value="usd">USD</option>
+            <option value="ksh">KSH</option>
+            <option value="eur">EUR</option>
+          </select>
           <FaBell />
 
           <img
