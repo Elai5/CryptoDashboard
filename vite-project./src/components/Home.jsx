@@ -116,12 +116,14 @@ const Home = () => {
             HELLO WORLD
           </div>
           <div className="flex flex-col border border-gray-300 rounded-md ">
-            <h2 className="text-2xl py-5 px-3">Quick Stat</h2>
+            <h2 className="text-base py-5 px-3 font-primary font-normal ">
+              Quick Stats
+            </h2>
             {portfolioCoins.map((coin) => (
               <div className="flex items-center border-b border-gray-300 px-2">
                 <div
                   key={coin.id}
-                  className="w-full grid grid-cols-[1fr_3fr_2fr] gap-3 "
+                  className="w-full grid grid-cols-[40px_3fr_2fr] gap-3 "
                 >
                   <p className="image py-2">
                     <img src={coin.image} alt={coin.name} className="w-8 h-8" />
@@ -129,16 +131,18 @@ const Home = () => {
 
                   <p className="name flex flex-col p-2 rounded">
                     {coin.name}
-                    <span className="text-sm uppercase">{coin.symbol}</span>
+                    <span className="text-xs uppercase text-[hsl(60,1%,52%)]">
+                      {coin.symbol}
+                    </span>
                   </p>
 
-                  <p className="price flex flex-col text-right">
+                  <p className="price flex flex-col text-right text-sm font-bold">
                     $
                     {coin.current_price.toLocaleString(undefined, {
                       minimumFractionDigits: 2,
                     })}
                     <span
-                      className="stats text-sm"
+                      className="stats text-xs"
                       style={{
                         color:
                           coin.price_change_percentage_24h >= 0
