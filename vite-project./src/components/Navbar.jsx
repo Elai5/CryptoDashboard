@@ -1,7 +1,7 @@
 /** @format */
 
 import { MdDashboard } from "react-icons/md";
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { assets } from "../assets/assets";
 import { BiSearch } from "react-icons/bi";
 import { FaBell } from "react-icons/fa";
@@ -32,6 +32,25 @@ const Navbar = () => {
       }
     }
   };
+
+  const [input, setInput] = useState("");
+
+  const inputHandler = (event) => {
+    setInput(event.target.value);
+  };
+
+  const searchHandler = async (event) => {
+    event.preventDefault();
+    const coins = await allCoin.filter((item) => {
+      return item.name.toLowerCase().includes(input.toLowerCase());
+    });
+    setDisplayCoin(coins);
+  };
+
+  useEffect(() => {
+    setDisplayCoin(allCoin);
+  }, [allCoin]);
+
   // const { setCurrency } = useContext(CoinContext);
   return (
     <div className="flex flex-col gap-1">
@@ -50,8 +69,11 @@ const Navbar = () => {
               type="text"
               name=""
               id=""
+              onChange={inputHandler}
+              value={input}
               placeholder="Search crypto,markets..."
               className="px-4 text-xs border-2 border-none outline-none rounded-md"
+              required
             />
             {/* <button
               type="submit"
