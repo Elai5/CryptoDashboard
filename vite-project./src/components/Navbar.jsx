@@ -18,8 +18,8 @@ const Navbar = () => {
         setCurrency({ name: "usd", symbol: "$" });
         break;
       }
-      case "": {
-        setCurrency({ name: "ksh", symbol: "KES" });
+      case "gbp": {
+        setCurrency({ name: "gbp", symbol: "£" });
         break;
       }
       case "eur": {
@@ -32,6 +32,9 @@ const Navbar = () => {
       }
     }
   };
+
+  const { allCoin, currency } = useContext(CoinContext);
+  const [displayCoin, setDisplayCoin] = useState([]);
 
   const [input, setInput] = useState("");
 
@@ -61,6 +64,7 @@ const Navbar = () => {
         </div>
         <div className="flex items-center gap-3">
           <form
+            onSubmit={searchHandler}
             action=""
             className="flex items-center border-1 border-gray-300 rounded h-7  bg-white text-black px-2"
           >
@@ -70,11 +74,17 @@ const Navbar = () => {
               name=""
               id=""
               onChange={inputHandler}
+              list="coinlist"
               value={input}
               placeholder="Search crypto,markets..."
               className="px-4 text-xs border-2 border-none outline-none rounded-md"
               required
             />
+            <datalist id="coinlist">
+              {allCoin.map((item, index) => (
+                <option key={index} value={item.name} />
+              ))}
+            </datalist>
             {/* <button
               type="submit"
               className="border-1 border-gray-400 rounded text-xs bg-purple-700 text-white px-4 py-1"
@@ -89,7 +99,7 @@ const Navbar = () => {
             className="hover:cursor-pointer hover:border-none outline-none"
           >
             <option value="usd">USD</option>
-            <option value="ksh">KSH</option>
+            <option value="gbp">GBP</option>
             <option value="eur">EUR</option>
           </select>
           <FaBell />

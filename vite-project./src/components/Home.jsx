@@ -2,8 +2,16 @@
 
 import React, { useContext, useEffect, useState } from "react";
 import { CoinContext } from "../context/CoinContext";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
 
-const Home = () => {
+const Home = ({ coins }) => {
   const { allCoin, currency } = useContext(CoinContext);
   const [displayCoin, setDisplayCoin] = useState([]);
 
@@ -49,6 +57,62 @@ const Home = () => {
   const portfolioCoins = userPortfolio
     .map((portfolioCoins) => allCoin.find((c) => c.id === portfolioCoins.id))
     .filter(Boolean);
+
+  const [chartData, setChartData] = useState([]);
+  const [selectedCoin, setSelectedCoin] = useState("bitcoin");
+  //   useEffect(() => {
+  //     const fetchChartData = async () => {
+  //       try {
+  //         const res = await fetch(
+  //           "https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=1"
+  //         );
+  //         const data = await res.json();
+  //         const formattedData = data.prices.map(([time, price]) => ({
+  //           time: new Date(time).toLocaleTimeString([], {
+  //             hour: "2-digit",
+  //             minute: "2-digit",
+  //           }),
+  //           price: price.toFixed(2),
+  //         }));
+  //         setGraphData(formattedData);
+  //       } catch (error) {
+  //         console.error("Error fetching chart data:", error);
+  //       }
+  //     };
+
+  //     fetchChartData();
+  //   }, []);
+  const fetchChartData = async () => {
+    try {
+      const response = await fetch(
+        `https://api.coingecko.com/api/v3/coins/${selectedCoin}/market_chart?vs_currency=${currency.name}&days=1`
+      );
+      const data = await response.json();
+
+      const formattedData = data.prices.map((price) => {
+        return {
+          time: new Date(price[0]).toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+          }),
+          price: price[1],
+        };
+      });
+      setChartData(formattedData);
+    } catch (error) {
+      console.error("Failed to fetch chart data:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchChartData();
+
+    const interval = setInterval(() => {
+      fetchChartData();
+    }, 300000);
+
+    return () => clearInterval(interval);
+  }, [selectedCoin, currency]);
 
   return (
     <div className="w-full">
@@ -112,8 +176,40 @@ const Home = () => {
           </div>
         </div>
         <div className="w-full grid grid-cols-[2fr_1fr] px-2 gap-3 ">
-          <div className="bg-blue-300 chart rounded-md border-1 border-gray-300">
-            HELLO WORLD
+          <div className="chart rounded-md border-1 border-gray-300">
+            <div className="bg-white chart rounded-md border-1 border-gray-300 p-3">
+              <div className="flex justify-between">
+                {" "}
+                <h3 className="text-sm font-bold mb-2">Bitcoin Price (24h)</h3>
+                <select
+                  value={selectedCoin}
+                  onChange={(e) => setSelectedCoin(e.target.value)}
+                  className="mb-5 p-2 border border-gray-300 rounded outline-none bg-gray-100 text-sm"
+                >
+                  <option value="bitcoin">Bitcoin (BTC)</option>
+                  <option value="ethereum">Ethereum (ETH)</option>
+                  <option value="solana">Solana (SOL)</option>
+                  <option value="dogecoin">Dogecoin (DOGE)</option>
+                  <option value="cardano">Cardano (ADA)</option>
+                </select>
+              </div>
+
+              <ResponsiveContainer width="100%" height={300}>
+                <LineChart data={chartData}>
+                  <XAxis dataKey="time" tick={{ fontSize: 10 }} />
+                  <YAxis domain={["auto", "auto"]} />
+                  <Tooltip />
+                  <Line
+                    type="monotone"
+                    dataKey="price"
+                    stroke="#00b894"
+                    strokeWidth={2}
+                    dot={false}
+                    activeDot={{ r: 6 }}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
           </div>
           <div className="flex flex-col border border-gray-300 rounded-md ">
             <h2 className="text-base py-5 px-3 font-primary font-normal ">
@@ -137,7 +233,7 @@ const Home = () => {
                   </p>
 
                   <p className="price flex flex-col text-right text-sm font-bold">
-                    $
+                    {currency.symbol}
                     {coin.current_price.toLocaleString(undefined, {
                       minimumFractionDigits: 2,
                     })}
