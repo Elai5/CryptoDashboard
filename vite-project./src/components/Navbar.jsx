@@ -34,8 +34,8 @@ const Navbar = () => {
   };
   // const { setCurrency } = useContext(CoinContext);
   return (
-    <div className="flex flex-col">
-      <div className="flex items-center justify-between px-5 py-2 border-b-1 ">
+    <div className="flex flex-col gap-1">
+      <div className="flex items-center justify-between px-5 py-2 border-b-1 border-gray-300">
         <div className="flex w-1/3 gap-2">
           <img className="size-8" src={assets.logo} alt="" />
           <span className="text-xl">BitFlow</span>

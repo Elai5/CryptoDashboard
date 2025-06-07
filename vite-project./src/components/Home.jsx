@@ -52,7 +52,7 @@ const Home = () => {
 
   return (
     <div className="w-full">
-      <div className="w-full flex flex-col px-6 py-10 gap-5">
+      <div className="w-full flex flex-col px-6 py-5 gap-2">
         <h1 className="text-2xl">Welcome back, James</h1>
         <p className="text-base">Here's how your crypto is doing today</p>
         <div className="w-full grid grid-cols-[2fr_2fr_2fr] px-2 py-2 gap-2">
@@ -205,9 +205,18 @@ const Home = () => {
                   <p className="flex items-center">
                     {currency.symbol} {item.current_price.toLocaleString()}
                   </p>
-                  <p className="flex items-center">
-                    {Math.floor(item.price_change_percentage_24h * 100) / 100}
+                  <p
+                    className={`flex items-center text-base ${
+                      item.price_change_percentage_24h > 0
+                        ? "text-green-700"
+                        : "text-red-600"
+                    }`}
+                  >
+                    {(
+                      Math.floor(item.price_change_percentage_24h * 100) / 100
+                    ).toFixed(2)}
                   </p>
+
                   <p className="flex items-center">
                     {currency.symbol}
                     {item.market_cap.toLocaleString()}

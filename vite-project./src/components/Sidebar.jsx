@@ -11,40 +11,40 @@ import { LuSettings } from "react-icons/lu";
 
 const Sidebar = () => {
   return (
-    <nav className="w-42 p-3 border-r-2">
+    <nav className="w-60 p-3 border-1 border-gray-300  rounded">
       <div className="flex flex-col justify-between">
-        <ul className="flex flex-col gap-5 hover:cursor-pointer text-base w-full">
-          <li className="flex items-center gap-2 hover:bg-green-500  hover:text-white  rounded hover:font-bold w-full">
+        <ul className="flex flex-col gap-1 hover:cursor-pointer text-base w-full">
+          <li className="flex items-center gap-2 py-2 px-1 hover:bg-[hsl(122,39%,49%)]  hover:text-white  rounded hover:font-bold">
             <a href="">
               <TbLayoutDashboard />
             </a>
             <span>Dashboard</span>
           </li>
-          <li className="flex items-center gap-2 hover:bg-green-500  hover:text-white  rounded hover:font-bold">
+          <li className="flex items-center gap-2 py-2 px-1 hover:bg-[hsl(122,39%,49%)]  hover:text-white  rounded hover:font-bold">
             <a href="">
               <BsGraphUp />
             </a>
             <span>Market</span>
           </li>
-          <li className="flex items-center gap-2 hover:bg-green-500 hover:text-white rounded hover:font-bold ">
+          <li className="flex items-center gap-2 py-2 px-1 hover:bg-[hsl(122,39%,49%)] hover:text-white rounded hover:font-bold ">
             <a href="">
               <LuWallet />
             </a>
             <span>Portfolio</span>
           </li>
-          <li className="flex items-center gap-2 hover:bg-green-500  hover:text-white  rounded hover:font-bold">
+          <li className="flex items-center gap-2 py-2 px-1 hover:bg-[hsl(122,39%,49%)]  hover:text-white  rounded hover:font-bold">
             <a href="">
               <HiOutlineStar />
             </a>
             <span>Watchlist</span>
           </li>
-          <li className="flex items-center gap-2 hover:bg-green-500  hover:text-white  rounded hover:font-bold">
+          <li className="flex items-center gap-2 py-2 px-1 hover:bg-[hsl(122,39%,49%)]  hover:text-white  rounded hover:font-bold">
             <a href="">
               <PiBellRinging />
             </a>
             <span>Alerts</span>
           </li>
-          <li className="flex items-center gap-2 hover:bg-green-500  hover:text-white rounded hover:font-bold">
+          <li className="flex items-center gap-2  py-2 px-1 hover:bg-[hsl(122,39%,49%)]  hover:text-white rounded hover:font-bold">
             <a href="">
               <LuSettings />
             </a>
@@ -52,7 +52,7 @@ const Sidebar = () => {
           </li>
           <button
             type="submit"
-            className="flex items-center gap-2 hover:text-white hover:bg-green-500 rounded"
+            className="flex items-center gap-2 py-2 px-1 hover:text-white hover:bg-[hsl(122,39%,49%)] rounded"
           >
             <MdLogout /> <span>Logout</span>
           </button>
