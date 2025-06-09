@@ -58,8 +58,12 @@ const Navbar = () => {
   return (
     <div className="w-full flex flex-col gap-1">
       <div className="w-full flex items-center justify-between px-1 md:px-5 py-2 border-b-1 border-gray-300 ">
-        <div className="flex w-20">
-          <img className=" md:flex w-1/2 rounded " src={assets.logo4} alt="" />
+        <div className="flex w-20 gap-2 items-center">
+          <img
+            className="md:flex w-1/2 rounded "
+            src={assets.logo4}
+            alt="logoImage"
+          />
           <span className="hidden md:flex items-center md:text-2xl font-tertiary font-semibold">
             BitFlow
           </span>
