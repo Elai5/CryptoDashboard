@@ -11,7 +11,7 @@ import { LuSettings } from "react-icons/lu";
 
 const Sidebar = () => {
   return (
-    <nav className="md:w-60 p-3 border-1 border-gray-300  rounded">
+    <nav className="md:w-60 p-3 border-1 border-gray-300 rounded mt-20 ">
       <div className="flex flex-col justify-between">
         <ul className="flex flex-col gap-1 hover:cursor-pointer text-base w-full">
           <li className="flex items-center gap-2 py-2 px-1 bg-[hsl(122,39%,49%)] text-white  hover:text-white  rounded hover:font-bold">
@@ -21,7 +21,7 @@ const Sidebar = () => {
             <span className="hidden md:flex">Dashboard</span>
           </li>
           <li className="flex items-center gap-2 py-2 px-1 hover:bg-[hsl(122,39%,49%)]  hover:text-white  rounded hover:font-bold">
-            <a href="" className="text-2xl md:text-base ">
+            <a href="#market" className="text-2xl md:text-base ">
               <BsGraphUp />
             </a>
             <span className="hidden md:flex">Market</span>

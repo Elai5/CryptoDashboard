@@ -115,7 +115,7 @@ const Home = ({ coins }) => {
   }, [selectedCoin, currency]);
 
   return (
-    <div className="mx-auto max-w-full">
+    <div className="mx-auto max-w-full pt-15">
       <div className="w-full flex flex-col px-2 sm:px-4 md:px-6 py-5 gap-2">
         <h1 className="text-2xl">Welcome back, James</h1>
         <p className="text-base">Here's how your crypto is doing today</p>
@@ -280,7 +280,7 @@ const Home = ({ coins }) => {
             </div> */}
           </div>
         </div>
-        <div className="flex items-center px-2">
+        {/* <div className="flex items-center px-2">
           <div className="w-full border border-gray-300 rounded-md flex flex-col gap-3">
             <h2 className="text-sm md:text-base font-semibold px-1 md:px-5 mt-4">
               Top Cryptocurrencies by Market Cap
@@ -332,7 +332,7 @@ const Home = ({ coins }) => {
               </div>
             ))}
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

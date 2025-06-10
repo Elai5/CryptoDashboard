@@ -57,7 +57,7 @@ const Navbar = () => {
   // const { setCurrency } = useContext(CoinContext);
   return (
     <div className="w-full flex flex-col gap-1">
-      <div className="w-full flex items-center justify-between px-1 md:px-5 py-2 border-b-1 border-gray-300 ">
+      <div className="fixed top-0 left-0 z-50  w-full flex items-center justify-between px-1 md:px-5 py-2 border-b-1 border-gray-300 shadow-md bg-white">
         <div className="flex w-20 gap-2 items-center">
           <img
             className="md:flex w-1/2 rounded "
