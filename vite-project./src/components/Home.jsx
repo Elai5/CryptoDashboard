@@ -115,67 +115,80 @@ const Home = ({ coins }) => {
   }, [selectedCoin, currency]);
 
   return (
-    <div className="mx-auto max-w-full pt-15">
-      <div className="w-full flex flex-col px-2 sm:px-4 md:px-6 py-5 gap-2">
-        <h1 className="text-2xl">Welcome back, James</h1>
-        <p className="text-base">Here's how your crypto is doing today</p>
-        <div className="w-full grid grid-cols-1 md:grid-cols-3 px-2 py-2 gap-2">
-          <div className="flex flex-col border-1 border-gray-300 rounded-md px-5 py-3">
-            <p className="text-sm text-[hsl(60,1%,52%)] mb-1">Total Invested</p>
-            <span className="font-extrabold text-base">
-              {currency.symbol}
-              {totalInvested.toLocaleString(undefined, {
-                minimumFractionDigits: 2,
-              })}
-            </span>
-            <small className="text-xs ">Across all assets</small>
+    <div className="mx-auto max-w-full">
+      <div className="w-full flex flex-col h-screen md:px-1 py-5 gap-10 ">
+        <div className="flex flex-col gap-5">
+          <div className="flex flex-col gap-1 px-2 py-2 ">
+            <h1 className="text-2xl ">
+              Welcome back, <span className="font-tertiary">James</span>
+            </h1>
+            <p className="text-base font-secondary">
+              Here's how your crypto is doing today
+            </p>
           </div>
-          <div className="flex flex-col border-1 border-gray-300 rounded-md px-5 py-3">
-            <p className="text-sm text-[hsl(60,1%,52%)] mb-1">Current Value</p>
-            <span className="font-extrabold text-base ">
-              {currency.symbol}
-              {currentValue.toLocaleString(undefined, {
-                minimumFractionDigits: 2,
-              })}
-            </span>
-            <p
-              className="text-xs"
-              style={{ color: gainPercent >= 0 ? "green" : "red" }}
-            >
-              {gainPercent >= 0 ? "+" : ""}
-              {gainPercent.toFixed(2)}%
-            </p>
+          <div className="w-full grid grid-cols-1 md:grid-cols-3  gap-2">
+            <div className="flex flex-col border-1 border-gray-300 rounded-md px-5 py-3">
+              <p className="text-sm text-[hsl(60,1%,52%)] mb-1">
+                Total Invested
+              </p>
+              <span className="font-extrabold text-base">
+                {currency.symbol}
+                {totalInvested.toLocaleString(undefined, {
+                  minimumFractionDigits: 2,
+                })}
+              </span>
+              <small className="text-xs ">Across all assets</small>
+            </div>
+            <div className="flex flex-col border-1 border-gray-300 rounded-md px-5 py-3">
+              <p className="text-sm text-[hsl(60,1%,52%)] mb-1">
+                Current Value
+              </p>
+              <span className="font-extrabold text-base ">
+                {currency.symbol}
+                {currentValue.toLocaleString(undefined, {
+                  minimumFractionDigits: 2,
+                })}
+              </span>
+              <p
+                className="text-xs"
+                style={{ color: gainPercent >= 0 ? "green" : "red" }}
+              >
+                {gainPercent >= 0 ? "+" : ""}
+                {gainPercent.toFixed(2)}%
+              </p>
 
-            {/* <p className="text-xs">+11.90%</p> */}
-            <small>All-time portfolio gain</small>
-          </div>
-          <div className="flex flex-col border-1 border-gray-300 rounded-md px-5 py-3">
-            <p className="text-sm text-[hsl(60,1%,52%)] mb-1">
-              Today's Profit/Loss
-            </p>
-            {/* <span className="bold text-2xl">$ 1,234.56</span> */}
-            <span
-              className="font-extrabold text-base"
-              //   style={{ color: todayChange >= 0 ? "green" : "red" }}
-            >
-              {currency.symbol}
-              {todayChange.toLocaleString(undefined, {
-                minimumFractionDigits: 2,
-              })}
-            </span>
-            <p
-              className="text-xs "
-              style={{ color: todayChange >= 0 ? "green" : "red" }}
-            >
-              {todayChange >= 0 ? "+" : ""}
-              {((todayChange / totalInvested) * 100).toFixed(2)}%
-            </p>
-            {/* <p className="text-xs">+2.47%</p> */}
+              {/* <p className="text-xs">+11.90%</p> */}
+              <small>All-time portfolio gain</small>
+            </div>
+            <div className="flex flex-col border-1 border-gray-300 rounded-md px-5 py-3">
+              <p className="text-sm text-[hsl(60,1%,52%)] mb-1">
+                Today's Profit/Loss
+              </p>
+              {/* <span className="bold text-2xl">$ 1,234.56</span> */}
+              <span
+                className="font-extrabold text-base"
+                //   style={{ color: todayChange >= 0 ? "green" : "red" }}
+              >
+                {currency.symbol}
+                {todayChange.toLocaleString(undefined, {
+                  minimumFractionDigits: 2,
+                })}
+              </span>
+              <p
+                className="text-xs "
+                style={{ color: todayChange >= 0 ? "green" : "red" }}
+              >
+                {todayChange >= 0 ? "+" : ""}
+                {((todayChange / totalInvested) * 100).toFixed(2)}%
+              </p>
+              {/* <p className="text-xs">+2.47%</p> */}
 
-            <small>Since last 24 hours</small>
+              <small>Since last 24 hours</small>
+            </div>
           </div>
         </div>
-        <div className="w-full grid grid-cols-1 md:grid-cols-[2fr_1fr] px-2 gap-3 ">
+
+        <div className="w-full grid grid-cols-1 md:grid-cols-[2fr_1fr] px-1 gap-3 ">
           <div className="chart rounded-md border-1 border-gray-300">
             <div className="bg-white chart rounded-md border-1 border-gray-300 p-3">
               <div className="flex justify-between">

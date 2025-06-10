@@ -1,12 +1,10 @@
 /** @format */
 
-import { MdDashboard } from "react-icons/md";
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { assets } from "../assets/assets";
 import { BiSearch } from "react-icons/bi";
 import { FaBell } from "react-icons/fa";
-import Home from "./Home";
-import Sidebar from "./Sidebar";
+
 import { CoinContext } from "../context/CoinContext";
 
 const Navbar = () => {
@@ -83,7 +81,7 @@ const Navbar = () => {
               list="coinlist"
               value={input}
               placeholder="Search crypto,markets..."
-              className="px-4 text-xs border-2 border-none outline-none rounded-md"
+              className="px-4 text-xs border-2 border-none outline-none rounded-md w-full"
               required
             />
             <datalist id="coinlist">
@@ -118,10 +116,7 @@ const Navbar = () => {
           </div>
         </div>
       </div>
-      <div className="flex">
-        <Sidebar />
-        <Home />
-      </div>
+      <div className="flex"></div>
     </div>
   );
 };

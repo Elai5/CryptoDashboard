@@ -13,7 +13,7 @@ const Market = () => {
   }, [allCoin]);
 
   return (
-    <div id="market" className="w-full flex justify-center py-15 ">
+    <div id="market" className="w-full flex justify-center py-5 ">
       <div className="flex justify-center items-center px-2">
         <div className="w-full border border-gray-300 rounded-md flex flex-col gap-3">
           <h2 className="text-sm md:text-base font-semibold px-1 md:px-5 mt-4">
@@ -58,7 +58,7 @@ const Market = () => {
                   ).toFixed(2)}
                 </p>
 
-                <p className=" hidden md:flex items-center">
+                <p className=" hidden md:flex items-center pr-1">
                   {currency.symbol}
                   {item.market_cap.toLocaleString()}
                 </p>
