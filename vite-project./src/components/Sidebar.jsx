@@ -92,7 +92,7 @@ const Sidebar = () => {
             >
               <PiBellRinging />
               <span className="hidden md:flex">Alerts</span>
-             </NavLink>
+            </NavLink>
           </li>
           <li className="flex items-center hover:bg-[hsl(122,39%,49%)]  hover:text-white rounded hover:font-bold">
             <NavLink
@@ -113,7 +113,8 @@ const Sidebar = () => {
             type="submit"
             className="flex items-center gap-2 py-2 px-1 hover:text-white hover:bg-[hsl(122,39%,49%)] rounded text-2xl md:text-base"
           >
-            <MdLogout /> <span className="hidden md:flex text-gray-700">Logout</span>
+            <MdLogout />{" "}
+            <span className="hidden md:flex text-gray-700">Logout</span>
           </button>
         </ul>
         <div></div>

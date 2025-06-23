@@ -1,6 +1,9 @@
 <!-- @format -->
 
 # Crypto Dashboard
+<!-- @format -->
+
+# Crypto Dashboard
 
 A responsive, real-time cryptocurrency dashboard built with **React 19+**, **Vite**, **Tailwind CSS**, and **Chart.js**. This application fetches live data from the CoinGecko API to display top crypto market trends, interactive charts, and a simplified user portfolio simulation.
 
@@ -129,7 +132,43 @@ Full documentation available in the [`docs/`](./docs/) folder:
 ---
 
 ## Tech Stack
+## Tech Stack
 
+- **React 19+**
+- **Vite** (for blazing fast development)
+- **Tailwind CSS**
+- **Chart.js**
+- **CoinGecko API**
+
+---
+
+## Limitations & Future Work
+
+### Limitations
+
+- Portfolio and watchlist data is currently hardcoded.
+- No user authentication.
+- Limited to 10 coins.
+
+### Planned Improvements
+
+- Add user authentication (Firebase or Auth0)
+- Enable real-time watchlist management
+- Expand API integration for broader historical data
+- Improve responsiveness and accessibility
+
+---
+
+## Contributing
+
+We welcome contributions. If you'd like to make changes:
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/your-feature`)
+3. Make your changes
+4. Submit a PR for review
+
+Avoid working directly on `main` — we encourage development via pull requests.
 - **React 19+**
 - **Vite** (for blazing fast development)
 - **Tailwind CSS**
@@ -168,6 +207,9 @@ Avoid working directly on `main` — we encourage development via pull requests.
 
 ---
 
+## License
+
+This project is open-source and available under the [MIT License](LICENSE).
 ## License
 
 This project is open-source and available under the [MIT License](LICENSE).
