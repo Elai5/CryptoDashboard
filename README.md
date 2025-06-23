@@ -1,9 +1,5 @@
-<!-- @format -->
-
 # Crypto Dashboard
 <!-- @format -->
-
-# Crypto Dashboard
 
 A responsive, real-time cryptocurrency dashboard built with **React 19+**, **Vite**, **Tailwind CSS**, and **Chart.js**. This application fetches live data from the CoinGecko API to display top crypto market trends, interactive charts, and a simplified user portfolio simulation.
 
@@ -22,10 +18,7 @@ A responsive, real-time cryptocurrency dashboard built with **React 19+**, **Vit
 ![Mobile View](vite-project./src/assets/Mobile.png)
 
 ---
-
-
 ## Table of Contents
-
 - [Overview](#overview)
 - [Features](#features)
 - [Demo](#demo)
@@ -47,8 +40,6 @@ This application simulates a logged-in user's crypto portfolio. It uses hardcode
 - Allows users to search and filter coins.
 - Renders price charts with auto-refresh capabilities.
 - Built with performance and developer experience in mind.
-
-
 
 ## Features
 
@@ -132,8 +123,6 @@ Full documentation available in the [`docs/`](./docs/) folder:
 ---
 
 ## Tech Stack
-## Tech Stack
-
 - **React 19+**
 - **Vite** (for blazing fast development)
 - **Tailwind CSS**
@@ -208,8 +197,6 @@ Avoid working directly on `main` — we encourage development via pull requests.
 ---
 
 ## License
-
 This project is open-source and available under the [MIT License](LICENSE).
-## License
 
-This project is open-source and available under the [MIT License](LICENSE).
+
