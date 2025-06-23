@@ -7,15 +7,16 @@ A responsive, real-time cryptocurrency dashboard built with **React 19+**, **Vit
 
 ### 📊 Dashboard View
 
-![Dashboard View](./src/assets/Homepage Dashboard.png)
+![Dashboard View](vite-project./src/assets/Homepage.png)
+
 
 ### 📈 Market Page
 
-![Market Page](./src/assets/MarketPage.png)
+![Market Page](vite-project./src/assets/MarketPage.png)
 
 ### 📱 Mobile View
 
-![Mobile View](./src/assets/mobile.png)
+![Mobile View](vite-project./src/assets/Mobile.png)
 
 ---
 ## Table of Contents
