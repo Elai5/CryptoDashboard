@@ -89,12 +89,6 @@ const Navbar = () => {
                 <option key={index} value={item.name} />
               ))}
             </datalist>
-            {/* <button
-              type="submit"
-              className="border-1 border-gray-400 rounded text-xs bg-purple-700 text-white px-4 py-1"
-            >
-              Search
-            </button> */}
           </form>
           <select
             name=""
