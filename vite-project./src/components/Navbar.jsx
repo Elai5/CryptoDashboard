@@ -8,8 +8,10 @@ import { FaBell } from "react-icons/fa";
 import { CoinContext } from "../context/CoinContext";
 
 const Navbar = () => {
+  // Access context setter to update currency globally
   const { setCurrency } = useContext(CoinContext);
 
+  // Handles currency change from the dropdown
   const currencyHandler = (event) => {
     switch (event.target.value) {
       case "usd": {
@@ -31,9 +33,13 @@ const Navbar = () => {
     }
   };
 
+  // Access coin data and selected currency from context
   const { allCoin, currency } = useContext(CoinContext);
+
+  // Stores filtered coin list based on search input
   const [displayCoin, setDisplayCoin] = useState([]);
 
+  // Stores filtered coin list based on search input
   const [input, setInput] = useState("");
 
   const inputHandler = (event) => {
@@ -52,9 +58,9 @@ const Navbar = () => {
     setDisplayCoin(allCoin);
   }, [allCoin]);
 
-  // const { setCurrency } = useContext(CoinContext);
   return (
     <div className="w-full flex flex-col gap-1">
+      {/* Fixed top navbar */}
       <div className="fixed top-0 left-0 z-50  w-full flex items-center justify-between px-1 md:px-5 py-2 border-b-1 border-gray-300 shadow-md bg-white">
         <div className="flex w-20 gap-2 items-center">
           <img
@@ -67,6 +73,7 @@ const Navbar = () => {
           </span>
         </div>
         <div className="flex items-center gap-3">
+          {/* Search input (desktop only) */}
           <form
             onSubmit={searchHandler}
             action=""
@@ -90,6 +97,7 @@ const Navbar = () => {
               ))}
             </datalist>
           </form>
+          {/* Currency selection dropdown */}
           <select
             name=""
             id=""
@@ -101,6 +109,7 @@ const Navbar = () => {
             <option value="eur">EUR</option>
           </select>
           <FaBell />
+          {/* User profile avatar */}
           <div className="flex items-center justify-center">
             <img
               src={assets.man2}
