@@ -1,4 +1,13 @@
 /** @format */
+/**
+ * CoinContextProvider component
+ *
+ * Provides global state management for cryptocurrency data and selected currency.
+ * Fetches live coin market data from CoinGecko API whenever the currency changes.
+ * Shares coin data and currency state via React context to be consumed by child components.
+ * from coingecko site
+ */
+
 
 import { createContext, useEffect, useState } from "react";
 
