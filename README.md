@@ -1,68 +1,173 @@
-# 💰 CryptoDashboard
+<!-- @format -->
 
-A modern and responsive cryptocurrency dashboard built with **React** and **Tailwind CSS**.  
-It provides real-time market data, portfolio summary, and investment insights in a sleek interface.
+# Crypto Dashboard
 
----
+A responsive, real-time cryptocurrency dashboard built with **React 19+**, **Vite**, **Tailwind CSS**, and **Chart.js**. This application fetches live data from the CoinGecko API to display top crypto market trends, interactive charts, and a simplified user portfolio simulation.
 
-## 📌 Overview
+## Demo
 
-Bitflow is a frontend cryptocurrency dashboard that **assumes a user is logged in** and displays:
+### 📊 Dashboard View
 
-- ✅ User's **name** and **avatar**
-- 📊 A summary card showing:
-  - **Total Investment** (hardcoded for now using JavaScript)
-  - **Current Value** (based on live market data)
-  - **Profit/Loss** (auto-calculated from the total investment and current value)
+![Dashboard View](vite-project./src/assets/Dashboard.png)
 
-> ⚠️ Note: The total investment amount is **not real** — it's a placeholder value used to demonstrate functionality. However, **current prices and profit/loss calculations are dynamic and accurate** based on live data.
+### 📈 Market Page
 
----
+![Market Page](vite-project./src/assets/MarketPage.png)
 
-## 🔧 Features
+### 📱 Mobile View
 
-- 👤 Assumes logged-in user with mock name and avatar
-- 📈 Real-time prices from CoinGecko API
-- 💹 Auto-calculated profit/loss based on fake investment
-- 📱 Fully responsive layout with Tailwind CSS
-- 📉 Live charts that **update every X seconds** and on page **refresh**
-- 🔧 Components set up for scalability
+![Mobile View](vite-project./src/assets/Mobile.png)
 
 ---
 
-## 🚧 Features in Progress
 
-- 🔍 **Search functionality** (currently not working)
-- 🧮 **User-inputted investment tracking** (future feature)
-- 📄 Expansion to other pages (currently only Dashboard is functional)
-- 🔁 Set dynamic refresh interval for price and chart updates
+## Table of Contents
 
----
-
-## 🛠 Tech Stack
-
-- **React** – Frontend framework
-- **Tailwind CSS** – Utility-first CSS for styling
-- **CoinGecko API** – For fetching real-time cryptocurrency data
-- **Chart.js or Recharts** – For price graph visualizations
+- [Overview](#overview)
+- [Features](#features)
+- [Demo](#demo)
+- [Installation](#installation)
+- [Folder Structure](#folder-structure)
+- [Documentation](#documentation)
+- [Tech Stack](#tech-stack)
+- [Limitations & Future Work](#limitations--future-work)
+- [Contributing](#contributing)
+- [License](#license)
 
 ---
 
-## 🧪 How it Works
+## Overview
 
-- `totalInvestment`: Declared using plain JavaScript for demo purposes.
-- `currentValue`: Pulled from CoinGecko based on selected cryptocurrencies.
-- `profit`: Calculated as `currentValue - totalInvestment`.
-- Data updates:
-  - On every page **refresh**
-  - (Planned) Automatically every few seconds
+This application simulates a logged-in user's crypto portfolio. It uses hardcoded mock data to demonstrate core features like portfolio performance, coin tracking, and real-time data updates.
+
+- Displays a list of the top 10 coins by market cap.
+- Allows users to search and filter coins.
+- Renders price charts with auto-refresh capabilities.
+- Built with performance and developer experience in mind.
+
+
+
+## Features
+
+- Live data updates from CoinGecko
+- Currency switcher (USD, EUR, GBP)
+- Mock portfolio with profit/loss tracking
+- Responsive design for all screen sizes
+- Reusable, modular component structure
+- Lightweight and fast (built with Vite)
 
 ---
 
-## 🚀 Getting Started
+## Installation
+
+### Prerequisites
+
+- Node.js v16+
+- npm or yarn
+- A [CoinGecko API Key](https://docs.coingecko.com/reference/introduction)
+
+### Clone and Run
 
 ```bash
-git clone https://github.com/Elai5/CryptoDashboard.git
-cd viteproject
+git clone https://github.com/your-username/crypto-dashboard.git
+cd crypto-dashboard
 npm install
+```
+
+### Environment Setup
+
+Create a `.env` file in the root directory with the following:
+
+```env
+VITE_COINGECKO_API_KEY=your_api_key_here
+```
+
+### Start the App
+
+```bash
 npm run dev
+```
+
+If you've never used Tailwind CSS before, follow the [official Tailwind + Vite installation guide](https://tailwindcss.com/docs/installation/using-vite).
+
+---
+
+## Folder Structure
+
+```
+src/
+│
+├── components/
+│   ├── Navbar.jsx
+│   ├── Sidebar.jsx
+│   ├── Market.jsx
+│   ├── Graph.jsx
+│   └── QuickStats.jsx
+│
+├── context/
+│   └── CoinContext.jsx
+│
+├── pages/
+│   ├── Dashboard.jsx
+│   └── Market.jsx
+│
+├── App.jsx
+├── main.jsx
+└── index.css
+```
+
+---
+
+## Documentation
+
+Full documentation available in the [`docs/`](./docs/) folder:
+
+- [API Reference](./docs/api.md)
+- [Usage Guide](./docs/usage.md)
+- [Architecture](./docs/architecture.md)
+
+---
+
+## Tech Stack
+
+- **React 19+**
+- **Vite** (for blazing fast development)
+- **Tailwind CSS**
+- **Chart.js**
+- **CoinGecko API**
+
+---
+
+## Limitations & Future Work
+
+### Limitations
+
+- Portfolio and watchlist data is currently hardcoded.
+- No user authentication.
+- Limited to 10 coins.
+
+### Planned Improvements
+
+- Add user authentication (Firebase or Auth0)
+- Enable real-time watchlist management
+- Expand API integration for broader historical data
+- Improve responsiveness and accessibility
+
+---
+
+## Contributing
+
+We welcome contributions. If you'd like to make changes:
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/your-feature`)
+3. Make your changes
+4. Submit a PR for review
+
+Avoid working directly on `main` — we encourage development via pull requests.
+
+---
+
+## License
+
+This project is open-source and available under the [MIT License](LICENSE).
