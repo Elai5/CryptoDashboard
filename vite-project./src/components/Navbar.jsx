@@ -1,4 +1,11 @@
 /** @format */
+/**
+ * Navbar component
+ *
+ * Renders the site’s main navigation bar with responsive design.
+ * Includes links to primary sections and adapts layout for mobile and desktop.
+ * Utilizes React state/hooks for menu toggling on smaller screens.
+ */
 
 import { useContext, useEffect, useState } from "react";
 import { assets } from "../assets/assets";

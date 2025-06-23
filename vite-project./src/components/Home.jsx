@@ -19,15 +19,13 @@ const Home = ({ coins }) => {
   const { allCoin, currency } = useContext(CoinContext);
   const [displayCoin, setDisplayCoin] = useState([]);
 
-  // Update displayCoin whenever allCoin changes
-
+  // Sync displayCoin with global coin data
   useEffect(() => {
     setDisplayCoin(allCoin);
   }, [allCoin]);
 
-  // Hardcoded total invested
+  // Hardcoded portfolio and investment data for demo purposes
   const totalInvested = 45789.25;
-  // Quick stat data, assumed starred coin for user.
   const userPortfolio = [
     {
       id: "bitcoin",
@@ -45,13 +43,15 @@ const Home = ({ coins }) => {
       avg_buy_price: 100,
     },
   ];
-  //Calculates current value of the portfolio based on total invested
+
+  // Compute current portfolio value based on live prices
   const currentValue = userPortfolio.reduce((sum, coin) => {
     const liveCoin = allCoin.find((c) => c.id === coin.id);
     if (!liveCoin) return sum;
     return sum + coin.amount * liveCoin.current_price;
   }, 0);
-  // Calculate today's total profit or loss across the portfolio
+
+  // Calculate today's profit or loss across portfolio
   const todayChange = userPortfolio.reduce((sum, coin) => {
     const liveCoin = allCoin.find((c) => c.id === coin.id);
     if (!liveCoin) return sum;
@@ -63,6 +63,7 @@ const Home = ({ coins }) => {
   const profitLoss = currentValue - totalInvested;
   const gainPercent = (profitLoss / totalInvested) * 100;
 
+  // Filter portfolio coins from global coin data
   const portfolioCoins = userPortfolio
     .map((portfolioCoins) => allCoin.find((c) => c.id === portfolioCoins.id))
     .filter(Boolean);
@@ -71,6 +72,7 @@ const Home = ({ coins }) => {
   const [chartData, setChartData] = useState([]);
   const [selectedCoin, setSelectedCoin] = useState("bitcoin");
 
+  // Fetch price chart data from CoinGecko API for selected coin
   const fetchChartData = async () => {
     try {
       const response = await fetch(
@@ -93,6 +95,7 @@ const Home = ({ coins }) => {
     }
   };
 
+  // Fetch chart data on selectedCoin or currency change, and refresh every 5 minutes
   useEffect(() => {
     fetchChartData();
 

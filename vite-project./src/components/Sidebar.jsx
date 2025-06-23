@@ -1,4 +1,9 @@
 /** @format */
+/**
+ * Sidebar component that renders the main navigation menu.
+ * Uses NavLink to dynamically highlight the active route.
+ * Responsive design: Icons always visible, text hidden on smaller screens.
+ */
 
 import React from "react";
 import { BsGraphUp } from "react-icons/bs";
@@ -12,6 +17,7 @@ import { Link } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 
 const Sidebar = () => {
+  // Shared styles for NavLinks to keep styling consistent across routes
   const baseLinkStyles =
     "flex items-center gap-2 py-2 px-1 rounded text-2xl md:text-base";
   return (
