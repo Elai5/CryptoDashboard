@@ -5,7 +5,9 @@ import React, { useContext, useEffect, useState } from "react";
 import { CoinContext } from "../context/CoinContext";
 
 const Market = () => {
+  // Access global state values from CoinContext
   const { allCoin, currency } = useContext(CoinContext);
+  // Local state to manage the currently displayed coins
   const [displayCoin, setDisplayCoin] = useState([]);
 
   useEffect(() => {
@@ -26,15 +28,18 @@ const Market = () => {
             <p className="text-sm">Market Cap</p>
             <p className="hidden md:flex text-sm">24hr Change</p>
           </div>
+          {/* Coin list - limit to top 10 */}
           {displayCoin.slice(0, 10).map((item, index) => (
             <div className="md:w-full flex items-center">
               <div
                 className="w-full grid grid-cols-[1fr_2fr_1fr] md:grid-cols-[70px_2fr_1fr_1fr_1fr] gap-4 border-b border-gray-300 "
                 key={index}
               >
+                {/* Market Cap Rank */}
                 <p className="flex items-center px-2 text-sm md:text-base">
                   {item.market_cap_rank}
                 </p>
+                {/* Coin image and name */}
                 <div>
                   {" "}
                   <img src={item.image} alt="" className="size-8" />
@@ -43,9 +48,11 @@ const Market = () => {
                   </p>
                 </div>
 
+                {/* Current Price (only visible on md screens and up) */}
                 <p className="hidden md:flex items-center text-sm md:text-base">
                   {currency.symbol} {item.current_price.toLocaleString()}
                 </p>
+                {/* 24hr Price Change */}
                 <p
                   className={`text-right flex items-center text-sm md:text-base ${
                     item.price_change_percentage_24h > 0
@@ -57,7 +64,7 @@ const Market = () => {
                     Math.floor(item.price_change_percentage_24h * 100) / 100
                   ).toFixed(2)}
                 </p>
-
+                {/* Market Cap (only visible on md screens and up) */}
                 <p className=" hidden md:flex items-center pr-1">
                   {currency.symbol}
                   {item.market_cap.toLocaleString()}
