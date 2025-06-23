@@ -1,8 +1,3 @@
-<!-- @format -->
-
-# Crypto Dashboard
-<!-- @format -->
-
 # Crypto Dashboard
 
 A responsive, real-time cryptocurrency dashboard built with **React 19+**, **Vite**, **Tailwind CSS**, and **Chart.js**. This application fetches live data from the CoinGecko API to display top crypto market trends, interactive charts, and a simplified user portfolio simulation.
@@ -23,12 +18,11 @@ A responsive, real-time cryptocurrency dashboard built with **React 19+**, **Vit
 
 ---
 
-
 ## Table of Contents
 
 - [Overview](#overview)
-- [Features](#features)
 - [Demo](#demo)
+- [Features](#features)
 - [Installation](#installation)
 - [Folder Structure](#folder-structure)
 - [Documentation](#documentation)
@@ -43,22 +37,21 @@ A responsive, real-time cryptocurrency dashboard built with **React 19+**, **Vit
 
 This application simulates a logged-in user's crypto portfolio. It uses hardcoded mock data to demonstrate core features like portfolio performance, coin tracking, and real-time data updates.
 
-- Displays a list of the top 10 coins by market cap.
-- Allows users to search and filter coins.
-- Renders price charts with auto-refresh capabilities.
-- Built with performance and developer experience in mind.
-
-
+- Displays a list of the **top 10 coins by market cap**.
+- Allows users to **search and filter coins**.
+- Renders **price charts with auto-refresh capabilities**.
+- Built with **performance and developer experience** in mind.
 
 ## Features
 
-- Live data updates from CoinGecko
-- Currency switcher (USD, EUR, GBP)
-- Mock portfolio with profit/loss tracking
-- Responsive design for all screen sizes
-- Reusable, modular component structure
-- Lightweight and fast (built with Vite)
+- **Live data updates** from CoinGecko
+- **Currency switcher** (USD, EUR, GBP)
+- **Mock portfolio with profit/loss tracking**
+- **Responsive design** for all screen sizes
+- **Reusable, modular component structure**
+- **Lightweight and fast** (built with Vite)
 
+---
 ---
 
 ## Installation
@@ -132,8 +125,6 @@ Full documentation available in the [`docs/`](./docs/) folder:
 ---
 
 ## Tech Stack
-## Tech Stack
-
 - **React 19+**
 - **Vite** (for blazing fast development)
 - **Tailwind CSS**
@@ -208,8 +199,4 @@ Avoid working directly on `main` — we encourage development via pull requests.
 ---
 
 ## License
-
-This project is open-source and available under the [MIT License](LICENSE).
-## License
-
 This project is open-source and available under the [MIT License](LICENSE).
