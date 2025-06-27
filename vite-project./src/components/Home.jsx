@@ -1,11 +1,13 @@
 /** @format */
 /**
  * Home.jsx - Main dashboard page
- * Displays user portfolio summary, price chart, and quick stats for selected coins.
+ * Displays user portfolio when logged in, otherwise shows market overview
  */
 
 import React, { useContext, useEffect, useState } from "react";
 import { CoinContext } from "../context/CoinContext";
+import { auth } from "../firebase/config";
+import { onAuthStateChanged } from "firebase/auth";
 import {
   LineChart,
   Line,
@@ -15,16 +17,27 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-const Home = ({ coins }) => {
+const Home = () => {
   const { allCoin, currency } = useContext(CoinContext);
   const [displayCoin, setDisplayCoin] = useState([]);
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  // Check auth state
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+      setLoading(false);
+    });
+    return () => unsubscribe();
+  }, []);
 
   // Sync displayCoin with global coin data
   useEffect(() => {
     setDisplayCoin(allCoin);
   }, [allCoin]);
 
-  // Hardcoded portfolio and investment data for demo purposes
+  // Demo portfolio data (only used when logged in)
   const totalInvested = 45789.25;
   const userPortfolio = [
     {
@@ -44,42 +57,46 @@ const Home = ({ coins }) => {
     },
   ];
 
-  // Compute current portfolio value based on live prices
-  const currentValue = userPortfolio.reduce((sum, coin) => {
-    const liveCoin = allCoin.find((c) => c.id === coin.id);
-    if (!liveCoin) return sum;
-    return sum + coin.amount * liveCoin.current_price;
-  }, 0);
+  // Compute portfolio values (only when logged in)
+  const currentValue = user 
+    ? userPortfolio.reduce((sum, coin) => {
+        const liveCoin = allCoin.find((c) => c.id === coin.id);
+        if (!liveCoin) return sum;
+        return sum + coin.amount * liveCoin.current_price;
+      }, 0)
+    : 0;
 
-  // Calculate today's profit or loss across portfolio
-  const todayChange = userPortfolio.reduce((sum, coin) => {
-    const liveCoin = allCoin.find((c) => c.id === coin.id);
-    if (!liveCoin) return sum;
-    const coinValue = coin.amount * liveCoin.current_price;
-    const change = coinValue * (liveCoin.price_change_percentage_24h / 100);
-    return sum + change;
-  }, 0);
+  const todayChange = user
+    ? userPortfolio.reduce((sum, coin) => {
+        const liveCoin = allCoin.find((c) => c.id === coin.id);
+        if (!liveCoin) return sum;
+        const coinValue = coin.amount * liveCoin.current_price;
+        const change = coinValue * (liveCoin.price_change_percentage_24h / 100);
+        return sum + change;
+      }, 0)
+    : 0;
 
   const profitLoss = currentValue - totalInvested;
   const gainPercent = (profitLoss / totalInvested) * 100;
 
-  // Filter portfolio coins from global coin data
-  const portfolioCoins = userPortfolio
-    .map((portfolioCoins) => allCoin.find((c) => c.id === portfolioCoins.id))
-    .filter(Boolean);
+  // Filter portfolio coins
+  const portfolioCoins = user
+    ? userPortfolio
+        .map((portfolioCoins) => allCoin.find((c) => c.id === portfolioCoins.id))
+        .filter(Boolean)
+    : allCoin.slice(0, 5); // Show top 5 coins when not logged in
 
-  // State for chart data and selected coin for price graph
+  // Chart state
   const [chartData, setChartData] = useState([]);
   const [selectedCoin, setSelectedCoin] = useState("bitcoin");
 
-  // Fetch price chart data from CoinGecko API for selected coin
+  // Fetch price chart data
   const fetchChartData = async () => {
     try {
       const response = await fetch(
         `https://api.coingecko.com/api/v3/coins/${selectedCoin}/market_chart?vs_currency=${currency.name}&days=1`
       );
       const data = await response.json();
-      // Format API data for chart: array of {time, price} objects
       const formattedData = data.prices.map((price) => {
         return {
           time: new Date(price[0]).toLocaleTimeString([], {
@@ -95,103 +112,103 @@ const Home = ({ coins }) => {
     }
   };
 
-  // Fetch chart data on selectedCoin or currency change, and refresh every 5 minutes
   useEffect(() => {
     fetchChartData();
-
     const interval = setInterval(() => {
       fetchChartData();
     }, 300000);
-
     return () => clearInterval(interval);
   }, [selectedCoin, currency]);
 
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
+
   return (
-    <div className="mx-auto max-w-full">
-      <div className="w-full flex flex-col h-screen md:px-1 py-5 gap-10 ">
-        <div className="flex flex-col gap-5">
-          <div className="flex flex-col gap-1 px-2 py-2 ">
-            <h1 className="text-2xl ">
-              Welcome back, <span className="font-tertiary">James</span>
-            </h1>
-            <p className="text-base font-secondary">
-              Here's how your crypto is doing today
-            </p>
-          </div>
-          {/* User summary cards-section: Total Invested, Current Value, and Today’s P/L */}
-          <div className="w-full grid grid-cols-1 md:grid-cols-3  gap-2">
-            <div className="flex flex-col border-1 border-gray-300 rounded-md px-5 py-3">
-              <p className="text-sm text-[hsl(60,1%,52%)] mb-1">
-                Total Invested
+    <div className="mx-auto max-w-full font-primary font-semibold ">
+      <div className="w-full flex flex-col h-screen md:px-1 py-5 gap-10">
+        {/* Conditional Welcome Message */}
+        {user ? (
+          <div className="flex flex-col gap-5">
+            <div className="flex flex-col gap-1 px-2 py-2">
+              <h1 className="text-2xl">
+                Welcome back, <span className="font-tertiary">{user.displayName || 'User'}</span>
+              </h1>
+              <p className="text-base font-secondary">
+                Here's how your crypto is doing today
               </p>
-              <span className="font-extrabold text-base">
-                {currency.symbol}
-                {totalInvested.toLocaleString(undefined, {
-                  minimumFractionDigits: 2,
-                })}
-              </span>
-              <small className="text-xs ">Across all assets</small>
             </div>
-            <div className="flex flex-col border-1 border-gray-300 rounded-md px-5 py-3">
-              <p className="text-sm text-[hsl(60,1%,52%)] mb-1">
-                Current Value
-              </p>
-              <span className="font-extrabold text-base ">
-                {currency.symbol}
-                {currentValue.toLocaleString(undefined, {
-                  minimumFractionDigits: 2,
-                })}
-              </span>
-              <p
-                className="text-xs"
-                style={{ color: gainPercent >= 0 ? "green" : "red" }}
-              >
-                {gainPercent >= 0 ? "+" : ""}
-                {gainPercent.toFixed(2)}%
-              </p>
-
-              <small>All-time portfolio gain</small>
-            </div>
-            <div className="flex flex-col border-1 border-gray-300 rounded-md px-5 py-3">
-              <p className="text-sm text-[hsl(60,1%,52%)] mb-1">
-                Today's Profit/Loss
-              </p>
-
-              <span className="font-extrabold text-base">
-                {currency.symbol}
-                {todayChange.toLocaleString(undefined, {
-                  minimumFractionDigits: 2,
-                })}
-              </span>
-              <p
-                className="text-xs "
-                style={{ color: todayChange >= 0 ? "green" : "red" }}
-              >
-                {todayChange >= 0 ? "+" : ""}
-                {((todayChange / totalInvested) * 100).toFixed(2)}%
-              </p>
-
-              <small>Since last 24 hours</small>
+            
+            {/* Portfolio Summary Cards - Only shown when logged in */}
+            <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-2">
+              <div className="flex flex-col border-1 border-gray-300 rounded-md px-5 py-3">
+                <p className="text-sm text-[hsl(60,1%,52%)] mb-1">Total Invested</p>
+                <span className="font-extrabold text-base">
+                  {currency.symbol}
+                  {totalInvested.toLocaleString(undefined, {
+                    minimumFractionDigits: 2,
+                  })}
+                </span>
+                <small className="text-xs">Across all assets</small>
+              </div>
+              <div className="flex flex-col border-1 border-gray-300 rounded-md px-5 py-3">
+                <p className="text-sm text-[hsl(60,1%,52%)] mb-1">Current Value</p>
+                <span className="font-extrabold text-base">
+                  {currency.symbol}
+                  {currentValue.toLocaleString(undefined, {
+                    minimumFractionDigits: 2,
+                  })}
+                </span>
+                <p className="text-xs" style={{ color: gainPercent >= 0 ? "green" : "red" }}>
+                  {gainPercent >= 0 ? "+" : ""}
+                  {gainPercent.toFixed(2)}%
+                </p>
+                <small>All-time portfolio gain</small>
+              </div>
+              <div className="flex flex-col border-1 border-gray-300 rounded-md px-5 py-3">
+                <p className="text-sm text-[hsl(60,1%,52%)] mb-1">Today's Profit/Loss</p>
+                <span className="font-extrabold text-base">
+                  {currency.symbol}
+                  {todayChange.toLocaleString(undefined, {
+                    minimumFractionDigits: 2,
+                  })}
+                </span>
+                <p className="text-xs" style={{ color: todayChange >= 0 ? "green" : "red" }}>
+                  {todayChange >= 0 ? "+" : ""}
+                  {((todayChange / totalInvested) * 100).toFixed(2)}%
+                </p>
+                <small>Since last 24 hours</small>
+              </div>
             </div>
           </div>
-        </div>
-        {/* Price chart section (24h view) with selectable coins */}
+        ) : (
+          <div className="flex flex-col gap-5">
+            <div className="flex flex-col gap-1 px-2 py-2">
+              <h1 className="text-2xl">Market Overview</h1>
+              <p className="text-base font-secondary">
+                Track the latest cryptocurrency prices
+              </p>
+            </div>
+          </div>
+        )}
 
-        <div className="w-full grid grid-cols-1 md:grid-cols-[2fr_1fr] px-1 gap-3 ">
+        {/* Price chart section (visible to all users) */}
+        <div className="w-full grid grid-cols-1 md:grid-cols-[2fr_1fr] px-1 gap-3">
           <div className="chart rounded-md border-1 border-gray-300">
             <div className="bg-white chart rounded-md border-1 border-gray-300 p-3">
               <div className="flex justify-between">
-                {" "}
                 <h3 className="text-xs md:text-sm font-bold mb-2">
-                  Bitcoin Price (24h)
+                  {selectedCoin.charAt(0).toUpperCase() + selectedCoin.slice(1)} Price (24h)
                 </h3>
                 <select
                   value={selectedCoin}
                   onChange={(e) => setSelectedCoin(e.target.value)}
                   className="mb-5 p-2 border border-gray-300 rounded outline-none bg-gray-100 text-sm"
                 >
-                  {/* Only displays a subset of the full chart data */}
-
                   <option value="bitcoin">Bitcoin (BTC)</option>
                   <option value="ethereum">Ethereum (ETH)</option>
                   <option value="solana">Solana (SOL)</option>
@@ -225,21 +242,15 @@ const Home = ({ coins }) => {
             </div>
           </div>
 
-          {/* Quick Stats: Mirrors user’s starred/important coins */}
-
-          <div className="flex flex-col border border-gray-300 rounded-md ">
-            <h2 className="text-sm font-semibold md:text-base py-2 md:py-5 px-1 md:px-3 font-primary md:font-normal ">
-              Quick Stats
+          {/* Quick Stats - Shows portfolio when logged in, top coins when not */}
+          <div className="flex flex-col border border-gray-300 rounded-md">
+            <h2 className="text-sm font-semibold md:text-base py-2 md:py-5 px-1 md:px-3 font-primary md:font-normal">
+              {user ? 'Your Portfolio' : 'Top Cryptocurrencies'}
             </h2>
 
-            {/* Loop through portfolioCoins and display quick stats for each (image, name, price, % change) */}
-
             {portfolioCoins.map((coin) => (
-              <div className="flex items-center border-b border-gray-300 px-1 md:px-2">
-                <div
-                  key={coin.id}
-                  className="w-full flex items-center justify-between md:grid md:grid-cols-[40px_3fr_2fr] md:gap-3 "
-                >
+              <div key={coin.id} className="flex items-center border-b border-gray-300 px-1 md:px-2">
+                <div className="w-full flex items-center justify-between md:grid md:grid-cols-[40px_3fr_2fr] md:gap-3">
                   <p className="image flex md:block py-2">
                     <img src={coin.image} alt={coin.name} className="w-8 h-8" />
                   </p>
