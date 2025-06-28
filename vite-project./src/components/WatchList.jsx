@@ -89,7 +89,7 @@ const WatchList = () => {
             </p>
             <button
               onClick={() => navigate('/')}
-              className="mt-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors"
+              className="mt-4 bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors"
             >
               Browse Cryptocurrencies
             </button>
