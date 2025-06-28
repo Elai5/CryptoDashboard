@@ -3,11 +3,13 @@
 @import "tailwindcss";
 
 @theme {
-  --font-primary:  "Space Grotesk", sans-serif;
+  --font-primary:  "Parkinsans", sans-serif;
   --font-secondary: "Inter", sans-serif;
   --font-tertiary: "Major Mono Display", monospace;
 }
 
 body {
   @apply bg-gray-900 text-white;
+ 
+
 }

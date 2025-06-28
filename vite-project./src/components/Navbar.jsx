@@ -3,9 +3,9 @@
  * Optimized Navbar component with Firebase Authentication
  * 
  * Updates:
- * - Fixed watchlist functionality
- * - Proper favorites count display
- * - Consistent watchlist dropdown
+ * - Watchlist now uses Link for navigation
+ * - Consistent behavior with login/signup
+ * - Improved mobile menu
  */
 
 import React, { useContext, useEffect, useState, useCallback } from "react";
@@ -17,7 +17,8 @@ import {
   BiStar, 
   BiUser, 
   BiLogOut, 
-  BiCog
+  BiCog,
+  BiChevronDown
 } from "react-icons/bi";
 import { FaBell } from "react-icons/fa";
 import { CoinContext } from "../context/CoinContext";
@@ -51,7 +52,6 @@ const Navbar = () => {
   });
   const [dropdownStates, setDropdownStates] = useState({
     crypto: false,
-    watchlist: false,
     user: false,
     notifications: false
   });
@@ -72,7 +72,6 @@ const Navbar = () => {
       await signOut(auth);
       setDropdownStates({
         crypto: false,
-        watchlist: false,
         user: false,
         notifications: false
       });
@@ -190,7 +189,6 @@ const Navbar = () => {
           !event.target.closest('.dropdown-trigger')) {
         setDropdownStates({
           crypto: false,
-          watchlist: false,
           user: false,
           notifications: false
         });
@@ -207,27 +205,22 @@ const Navbar = () => {
     return user.displayName || user.email?.split('@')[0] || "User";
   };
 
-  // Check if coin is in watchlist
-  const isInWatchlist = (coinId) => {
-    return watchlist.some(item => item.id === coinId);
-  };
-
   // Top 5 cryptocurrencies for dropdown
   const topCryptos = allCoin.slice(0, 5);
 
   return (
     <>
       {/* Fixed navbar */}
-      <nav className="fixed top-0 left-0 z-50 w-full bg-gray-900 border-b border-gray-700 shadow-sm font-primary">
+      <nav className="fixed top-0 left-0 z-50 w-full bg-gray-900 border-b border-gray-700 shadow-sm font-primary p-2">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             
             {/* Left section - Logo and navigation */}
             <div className="flex items-center space-x-6">
               {/* Logo */}
-              <div 
-                className="flex items-center space-x-3 cursor-pointer" 
-                onClick={() => navigate('/')}
+              <Link 
+                to="/" 
+                className="flex items-center space-x-3"
               >
                 <img
                   className="h-8 w-8 rounded-lg object-cover"
@@ -237,7 +230,7 @@ const Navbar = () => {
                 <span className="hidden sm:block text-xl font-bold text-white">
                   BitFlow
                 </span>
-              </div>
+              </Link>
 
               {/* Desktop navigation */}
               <div className="hidden md:flex items-center space-x-4">
@@ -248,9 +241,7 @@ const Navbar = () => {
                     className="dropdown-trigger flex items-center space-x-1 px-3 py-2 rounded-md text-sm font-medium text-white hover:text-gray-300"
                   >
                     <span>Cryptocurrencies</span>
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
+                    <BiChevronDown className="w-4 h-4" />
                   </button>
 
                   {dropdownStates.crypto && (
@@ -268,63 +259,25 @@ const Navbar = () => {
                           </div>
                         </button>
                       ))}
-                      <div className="border-t border-gray-700"></div>
-                      <button
-                        onClick={() => navigateTo('/cryptocurrencies')}
-                        className="w-full text-left block px-4 py-2 text-sm text-blue-400 hover:bg-gray-700"
-                      >
-                        View all cryptocurrencies →
-                      </button>
+                      
                     </div>
                   )}
                 </div>
 
                 {/* Watchlist - only for authenticated users */}
                 {user && (
-                  <div className="relative dropdown-container">
-                    <button
-                      onClick={() => toggleDropdown('watchlist')}
-                      className="dropdown-trigger flex items-center space-x-1 px-3 py-2 rounded-md text-sm font-medium text-white hover:text-gray-300"
-                    >
-                      <BiStar className="text-yellow-400" />
-                      <span>Watchlist</span>
-                      {watchlist > 0 && (
-                        <span className="ml-1 bg-yellow-900 text-yellow-200 text-xs px-2 py-0.5 rounded-full">
-                          {watchlist}
-                        </span>
-                      )}
-                    </button>
-
-                    {dropdownStates.watchlist && watchlist.length > 0 && (
-                      <div className="absolute left-0 mt-2 w-64 bg-gray-800 rounded-md shadow-lg ring-1 ring-gray-700 py-1 z-10">
-                        <div className="px-4 py-2 text-sm font-medium text-gray-200 border-b border-gray-700">
-                          Your Watchlist
-                        </div>
-                        {watchlist.slice(0, 5).map((coin) => (
-                          <button
-                            key={coin.id}
-                            onClick={() => navigateTo(`/coin/${coin.id}`)}
-                            className="w-full text-left block px-4 py-2 text-sm text-gray-200 hover:bg-gray-700 flex items-center justify-between"
-                          >
-                            <div className="flex items-center space-x-3">
-                              <img src={coin.image} alt={coin.name} className="h-5 w-5 rounded-full" />
-                              <span>{coin.name}</span>
-                            </div>
-                            <span className="font-medium">
-                              {currency.symbol}{coin.current_price?.toLocaleString()}
-                            </span>
-                          </button>
-                        ))}
-                        <div className="border-t border-gray-700"></div>
-                        <button
-                          onClick={() => navigateTo('/watchlist')}
-                          className="w-full text-left block px-4 py-2 text-sm text-blue-400 hover:bg-gray-700"
-                        >
-                          View all watched coins →
-                        </button>
-                      </div>
+                  <Link
+                    to="/watchlist"
+                    className="flex items-center space-x-1 px-3 py-2 rounded-md text-sm font-medium text-white hover:text-gray-300"
+                  >
+                    <BiStar className="text-yellow-400" />
+                    <span>Watchlist</span>
+                    {watchlist > 0 && (
+                      <span className="ml-1 bg-yellow-900 text-yellow-200 text-xs px-2 py-0.5 rounded-full">
+                        {watchlist}
+                      </span>
                     )}
-                  </div>
+                  </Link>
                 )}
               </div>
             </div>
@@ -513,7 +466,7 @@ const Navbar = () => {
                   </Link>
                   <Link
                     to="/signup"
-                    className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="px-4 py-2 text-sm font-medium text-white bg-green-600 hover:bg-green-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
                     Sign Up
                   </Link>
@@ -617,28 +570,31 @@ const Navbar = () => {
               )}
 
               {/* Navigation links */}
-              <button
-                onClick={() => navigateTo('/cryptocurrencies')}
+              <Link
+                to="/cryptocurrencies"
                 className="w-full text-left block px-3 py-2 text-sm font-medium rounded-md text-gray-200 hover:bg-gray-700"
+                onClick={closeMobileMenu}
               >
                 Cryptocurrencies
-              </button>
+              </Link>
               
               {user && (
-                <button
-                  onClick={() => navigateTo('/watchlist')}
+                <Link
+                  to="/watchlist"
                   className="w-full text-left block px-3 py-2 text-sm font-medium rounded-md text-gray-200 hover:bg-gray-700"
+                  onClick={closeMobileMenu}
                 >
                   Watchlist
-                </button>
+                </Link>
               )}
               
-              <button
-                onClick={() => navigateTo('/markets')}
+              <Link
+                to="/markets"
                 className="w-full text-left block px-3 py-2 text-sm font-medium rounded-md text-gray-200 hover:bg-gray-700"
+                onClick={closeMobileMenu}
               >
                 Markets
-              </button>
+              </Link>
 
               {/* User section for mobile */}
               {user && (

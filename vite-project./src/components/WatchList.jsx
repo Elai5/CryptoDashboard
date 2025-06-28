@@ -40,7 +40,7 @@ const WatchList = () => {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen bg-gray-900">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-green-500"></div>
       </div>
     );
   }
@@ -56,7 +56,7 @@ const WatchList = () => {
             </p>
             <button
               onClick={() => navigate('/login')}
-              className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
+              className="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
             >
               Login to Continue
             </button>

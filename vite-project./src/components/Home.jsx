@@ -139,7 +139,7 @@ const Home = () => {
   }
 
   return (
-    <div className="font-primary font-semibold bg-gray-900 min-h-screen w-full">
+    <div className="font-primary font-semibold bg-gray-900 min-h-screen w-full pt-4">
       <div className="w-full flex flex-col h-full gap-10 p-0">
         {/* Conditional Welcome Message */}
         {user ? (
