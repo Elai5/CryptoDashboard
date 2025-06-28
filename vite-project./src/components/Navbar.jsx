@@ -1,30 +1,40 @@
 /** @format */
 /**
- * Enhanced Navbar component with Firebase Authentication
+ * Optimized Navbar component with Firebase Authentication
  * 
- * Features:
- * - Responsive design for all screen sizes
- * - Integrated Firebase auth
- * - Dynamic user menu based on auth state
- * - Search functionality with coin suggestions
- * - Watchlist and portfolio quick access
- * - Currency selector
- * - Enhanced sign-out functionality with loading state
+ * Updates:
+ * - Removed dark/light mode toggle functionality
+ * - Removed news and portfolio sections
+ * - Added close button to mobile menu bar
+ * - Simplified theme classes for light mode only
  */
 
 import React, { useContext, useEffect, useState, useCallback } from "react";
 import { assets } from "../assets/assets";
-import { BiSearch, BiX, BiMenu, BiStar, BiUser, BiLogOut, BiWallet, BiCog } from "react-icons/bi";
+import { 
+  BiSearch, 
+  BiX, 
+  BiMenu, 
+  BiStar, 
+  BiUser, 
+  BiLogOut, 
+  BiWallet, 
+  BiCog
+} from "react-icons/bi";
 import { FaBell } from "react-icons/fa";
 import { CoinContext } from "../context/CoinContext";
 import { auth } from "../firebase/config";
 import { signOut, onAuthStateChanged } from "firebase/auth";
 import { useNavigate, Link } from "react-router-dom";
 
-
 const Navbar = () => {
   // Context and navigation
-  const { setCurrency, allCoin, currency, watchlist } = useContext(CoinContext);
+  const { 
+    setCurrency, 
+    allCoin, 
+    currency, 
+    watchlist
+  } = useContext(CoinContext);
   const navigate = useNavigate();
 
   // Authentication state
@@ -55,23 +65,22 @@ const Navbar = () => {
     return () => unsubscribe();
   }, []);
 
-  // Enhanced logout handler with loading state
+  // Enhanced logout handler
   const handleLogout = useCallback(async () => {
     setLogoutLoading(true);
     try {
       await signOut(auth);
-      // Reset UI states after logout
-      setDropdownStates({
+      setDropdownStates(prev => ({
+        ...prev,
         crypto: false,
         watchlist: false,
         user: false,
         notifications: false
-      });
+      }));
       setMobileStates({
         searchOpen: false,
         menuOpen: false
       });
-      // Redirect to home page
       navigate('/');
     } catch (error) {
       console.error("Logout error:", error);
@@ -155,6 +164,13 @@ const Navbar = () => {
     }));
   }, []);
 
+  const closeMobileMenu = useCallback(() => {
+    setMobileStates(prev => ({ 
+      ...prev, 
+      menuOpen: false
+    }));
+  }, []);
+
   // Dropdown handlers
   const toggleDropdown = useCallback((dropdown) => {
     setDropdownStates(prev => ({
@@ -186,19 +202,19 @@ const Navbar = () => {
     return () => document.removeEventListener('click', handleClickOutside);
   }, []);
 
-  // Top 5 cryptocurrencies for dropdown
-  const topCryptos = allCoin.slice(0, 5);
-
-  // User display name helper
+  // Helper functions
   const getUserDisplayName = () => {
     if (!user) return "";
     return user.displayName || user.email?.split('@')[0] || "User";
   };
 
+  // Top 5 cryptocurrencies for dropdown
+  const topCryptos = allCoin.slice(0, 5);
+
   return (
     <>
       {/* Fixed navbar */}
-      <nav className="fixed top-0 left-0 z-50 w-full bg-white font-semibold border-b border-gray-200  shadow-sm font-primary">
+      <nav className="fixed top-0 left-0 z-50 w-full border-b shadow-sm font-primary bg-gray-900 text-white border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             
@@ -214,7 +230,7 @@ const Navbar = () => {
                   src={assets.logo4}
                   alt="BitFlow Logo"
                 />
-                <span className="hidden sm:block text-xl font-bold text-gray-900">
+                <span className="hidden sm:block text-xl font-bold">
                   BitFlow
                 </span>
               </div>
@@ -225,7 +241,7 @@ const Navbar = () => {
                 <div className="relative dropdown-container">
                   <button
                     onClick={() => toggleDropdown('crypto')}
-                    className="dropdown-trigger flex items-center space-x-1 text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
+                    className="dropdown-trigger flex items-center space-x-1 px-3 py-2 rounded-md text-sm font-medium text-white hover:text-gray-600"
                   >
                     <span>Cryptocurrencies</span>
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -234,21 +250,23 @@ const Navbar = () => {
                   </button>
 
                   {dropdownStates.crypto && (
-                    <div className="absolute left-0 mt-2 w-56 bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 py-1 z-10">
+                    <div className="absolute left-0 mt-2 w-56 rounded-md shadow-lg ring-1 py-1 z-10 bg-white border-gray-200">
                       {topCryptos.map((crypto) => (
                         <button
                           key={crypto.id}
                           onClick={() => navigateTo(`/coin/${crypto.id}`)}
-                          className="w-full text-left block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center space-x-3"
+                          className="w-full text-left block px-4 py-2 text-sm flex items-center space-x-3 text-gray-700 hover:bg-gray-100"
                         >
                           <img src={crypto.image} alt={crypto.name} className="h-5 w-5 rounded-full" />
                           <div>
                             <span className="font-medium">{crypto.name}</span>
-                            <span className="text-gray-500 ml-2">{crypto.symbol.toUpperCase()}</span>
+                            <span className="ml-2 text-gray-500">
+                              {crypto.symbol.toUpperCase()}
+                            </span>
                           </div>
                         </button>
                       ))}
-                      <div className="border-t border-gray-100"></div>
+                      <div className="border-gray-200"></div>
                       <button
                         onClick={() => navigateTo('/cryptocurrencies')}
                         className="w-full text-left block px-4 py-2 text-sm text-blue-600 hover:bg-gray-100"
@@ -264,7 +282,7 @@ const Navbar = () => {
                   <div className="relative dropdown-container">
                     <button
                       onClick={() => toggleDropdown('watchlist')}
-                      className="dropdown-trigger flex items-center space-x-1 text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
+                      className="dropdown-trigger flex items-center space-x-1 px-3 py-2 rounded-md text-sm font-medium text-white hover:text-gray-600"
                     >
                       <BiStar className="text-yellow-500" />
                       <span>Watchlist</span>
@@ -276,15 +294,15 @@ const Navbar = () => {
                     </button>
 
                     {dropdownStates.watchlist && watchlist.length > 0 && (
-                      <div className="absolute left-0 mt-2 w-64 bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 py-1 z-10">
-                        <div className="px-4 py-2 text-sm font-medium text-gray-700 border-b border-gray-100">
+                      <div className="absolute left-0 mt-2 w-64 rounded-md shadow-lg ring-1 py-1 z-10 bg-white border-gray-200">
+                        <div className="px-4 py-2 text-sm font-medium border-b text-white border-gray-200">
                           Your Watchlist
                         </div>
                         {watchlist.slice(0, 5).map((coin) => (
                           <button
                             key={coin.id}
                             onClick={() => navigateTo(`/coin/${coin.id}`)}
-                            className="w-full text-left block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center justify-between"
+                            className="w-full text-left block px-4 py-2 text-sm flex items-center justify-between text-gray-700 hover:bg-gray-100"
                           >
                             <div className="flex items-center space-x-3">
                               <img src={coin.image} alt={coin.name} className="h-5 w-5 rounded-full" />
@@ -295,27 +313,16 @@ const Navbar = () => {
                             </span>
                           </button>
                         ))}
-                        <div className="border-t border-gray-100"></div>
-                        <button
+                        <div className="border-gray-200"></div>
+                        <Link
                           onClick={() => navigateTo('/watchlist')}
                           className="w-full text-left block px-4 py-2 text-sm text-blue-600 hover:bg-gray-100"
                         >
                           Manage watchlist →
-                        </button>
+                        </Link>
                       </div>
                     )}
                   </div>
-                )}
-
-                {/* Portfolio - only for authenticated users */}
-                {user && (
-                  <button
-                    onClick={() => navigateTo('/portfolio')}
-                    className="flex items-center space-x-1 text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium"
-                  >
-                    <BiWallet />
-                    <span>Portfolio</span>
-                  </button>
                 )}
               </div>
             </div>
@@ -324,19 +331,19 @@ const Navbar = () => {
             <div className="hidden md:flex flex-1 max-w-md mx-8 relative">
               <form onSubmit={handleSearchSubmit} className="w-full">
                 <div className="relative">
-                  <BiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+                  <BiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white h-4 w-4" />
                   <input
                     type="text"
                     value={searchInput}
                     onChange={handleSearchInput}
                     placeholder="Search cryptocurrencies..."
-                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full pl-10 pr-4 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent border-gray-300 text-white"
                   />
                   {searchInput && (
                     <button
                       type="button"
                       onClick={clearSearch}
-                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                      className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white hover:text-gray-600"
                     >
                       <BiX className="h-4 w-4" />
                     </button>
@@ -345,7 +352,7 @@ const Navbar = () => {
                 
                 {/* Search results dropdown */}
                 {searchResults.length > 0 && (
-                  <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
+                  <div className="absolute top-full left-0 right-0 mt-1 border rounded-lg shadow-lg z-10 bg-white border-gray-200">
                     {searchResults.map((coin) => (
                       <button
                         key={coin.id}
@@ -353,7 +360,7 @@ const Navbar = () => {
                           navigateTo(`/coin/${coin.id}`);
                           clearSearch();
                         }}
-                        className="w-full px-4 py-2 text-left hover:bg-gray-50 flex items-center space-x-3 border-b border-gray-100 last:border-b-0"
+                        className="w-full px-4 py-2 text-left flex items-center space-x-3 border-b last:border-b-0 hover:bg-gray-100 border-gray-200"
                       >
                         <img
                           src={coin.image}
@@ -361,8 +368,12 @@ const Navbar = () => {
                           className="h-6 w-6 rounded-full"
                         />
                         <div>
-                          <div className="font-medium text-sm">{coin.name}</div>
-                          <div className="text-xs text-gray-500">{coin.symbol?.toUpperCase()}</div>
+                          <div className="font-medium text-sm text-gray-700">
+                            {coin.name}
+                          </div>
+                          <div className="text-xs text-gray-500">
+                            {coin.symbol?.toUpperCase()}
+                          </div>
                         </div>
                       </button>
                     ))}
@@ -376,17 +387,17 @@ const Navbar = () => {
               {/* Mobile search toggle */}
               <button
                 onClick={toggleMobileSearch}
-                className="md:hidden p-2 text-gray-500 hover:text-gray-700 focus:outline-none"
+                className="md:hidden p-2 rounded-full focus:outline-none"
                 aria-label="Toggle search"
               >
-                <BiSearch className="h-5 w-5" />
+                <BiSearch className="h-5 w-5 text-gray-500" />
               </button>
 
               {/* Currency selector */}
               <select
                 onChange={handleCurrencyChange}
                 value={currency.name}
-                className="text-sm border border-gray-300 rounded-md px-3 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
+                className="text-sm border rounded-md px-3 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer border-gray-300 text-white"
               >
                 <option value="usd">USD</option>
                 <option value="gbp">GBP</option>
@@ -398,19 +409,19 @@ const Navbar = () => {
                 <div className="relative dropdown-container">
                   <button
                     onClick={() => toggleDropdown('notifications')}
-                    className="dropdown-trigger p-2 text-gray-500 hover:text-gray-700 focus:outline-none relative"
+                    className="dropdown-trigger p-2 rounded-full focus:outline-none relative"
                   >
-                    <FaBell className="h-4 w-4" />
+                    <FaBell className="h-4 w-4 text-gray-500" />
                     <span className="absolute -top-1 -right-1 h-3 w-3 bg-red-500 rounded-full"></span>
                   </button>
 
                   {dropdownStates.notifications && (
-                    <div className="absolute right-0 mt-2 w-80 bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 py-1 z-10">
-                      <div className="px-4 py-2 text-sm font-medium text-gray-700 border-b border-gray-100">
+                    <div className="absolute right-0 mt-2 w-80 rounded-md shadow-lg ring-1 py-1 z-10 bg-white border-gray-200">
+                      <div className="px-4 py-2 text-sm font-medium border-b text-gray-700 border-gray-200">
                         Notifications
                       </div>
                       <div className="max-h-64 overflow-y-auto">
-                        <div className="px-4 py-3 text-sm text-gray-500 text-center">
+                        <div className="px-4 py-3 text-sm text-center text-white">
                           No new notifications
                         </div>
                       </div>
@@ -421,7 +432,7 @@ const Navbar = () => {
 
               {/* Auth section */}
               {authLoading ? (
-                <h1>Loading...</h1>
+                <div className="h-8 w-8 rounded-full bg-gray-200 animate-pulse"></div>
               ) : user ? (
                 /* User menu */
                 <div className="relative dropdown-container">
@@ -436,20 +447,22 @@ const Navbar = () => {
                         className="h-8 w-8 rounded-full object-cover border-2 border-gray-200 hover:border-gray-300"
                       />
                     ) : (
-                      <div className="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center text-white text-sm font-medium">
+                      <div className="h-8 w-8 rounded-full flex items-center justify-center text-white text-sm font-medium bg-blue-500">
                         {getUserDisplayName().charAt(0).toUpperCase()}
                       </div>
                     )}
-                    <span className="hidden sm:block text-sm font-medium text-gray-700">
+                    <span className="hidden sm:block text-sm font-medium">
                       {getUserDisplayName()}
                     </span>
                   </button>
 
                   {dropdownStates.user && (
-                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 py-1 z-10">
-                      <div className="px-4 py-2 text-sm text-gray-700 border-b border-gray-100">
+                    <div className="absolute right-0 mt-2 w-48 rounded-md shadow-lg ring-1 py-1 z-10 bg-white border-gray-200">
+                      <div className="px-4 py-2 text-sm border-b text-gray-700 border-gray-200">
                         <div className="font-medium">{getUserDisplayName()}</div>
-                        <div className="text-xs text-gray-500 truncate">{user.email}</div>
+                        <div className="text-xs truncate text-gray-500">
+                          {user.email}
+                        </div>
                       </div>
                       
                       <button
@@ -461,14 +474,6 @@ const Navbar = () => {
                       </button>
                       
                       <button
-                        onClick={() => navigateTo('/portfolio')}
-                        className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                      >
-                        <BiWallet className="mr-3 h-4 w-4" />
-                        Portfolio
-                      </button>
-                      
-                      <button
                         onClick={handleSettings}
                         className="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                       >
@@ -476,7 +481,7 @@ const Navbar = () => {
                         Settings
                       </button>
                       
-                      <div className="border-t border-gray-100"></div>
+                      <div className="border-gray-200"></div>
                       
                       <button
                         onClick={handleLogout}
@@ -485,7 +490,7 @@ const Navbar = () => {
                       >
                         {logoutLoading ? (
                           <>
-                            <svg className="animate-spin -ml-1 mr-3 h-4 w-4 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <svg className="animate-spin -ml-1 mr-3 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                             </svg>
@@ -502,17 +507,17 @@ const Navbar = () => {
                   )}
                 </div>
               ) : (
-                /* Auth buttons */
-                <div className="flex items-center space-x-2">
+                /* Auth buttons - hidden on mobile */
+                <div className="hidden md:flex items-center space-x-2">
                   <Link
                     to="/login"
-                    className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 focus:outline-none"
+                    className="px-4 py-2 text-sm font-medium focus:outline-none text-gray-700 hover:text-gray-900"
                   >
                     Log In
                   </Link>
                   <Link
                     to="/signup"
-                    className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="px-4 py-2 text-sm font-medium text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-blue-600 hover:bg-blue-700"
                   >
                     Sign Up
                   </Link>
@@ -522,10 +527,10 @@ const Navbar = () => {
               {/* Mobile menu toggle */}
               <button
                 onClick={toggleMobileMenu}
-                className="md:hidden p-2 text-gray-500 hover:text-gray-700 focus:outline-none"
+                className="md:hidden p-2 rounded-full focus:outline-none"
                 aria-label="Toggle menu"
               >
-                <BiMenu className="h-5 w-5" />
+                <BiMenu className="h-5 w-5 text-gray-500" />
               </button>
             </div>
           </div>
@@ -533,15 +538,15 @@ const Navbar = () => {
 
         {/* Mobile search */}
         {mobileStates.searchOpen && (
-          <div className="md:hidden border-t border-gray-200 px-4 py-3 bg-gray-50">
+          <div className="md:hidden border-t px-4 py-3 border-gray-200 bg-gray-50">
             <form onSubmit={handleSearchSubmit} className="relative">
-              <BiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+              <BiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 h-4 w-4" />
               <input
                 type="text"
                 value={searchInput}
                 onChange={handleSearchInput}
                 placeholder="Search cryptocurrencies..."
-                className="w-full pl-10 pr-10 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full pl-10 pr-10 py-2 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 border-gray-300 text-gray-900"
                 autoFocus
               />
               <button
@@ -555,7 +560,7 @@ const Navbar = () => {
             
             {/* Mobile search results */}
             {searchResults.length > 0 && (
-              <div className="mt-2 bg-white border border-gray-200 rounded-lg shadow-lg max-h-48 overflow-y-auto">
+              <div className="mt-2 border rounded-lg shadow-lg max-h-48 overflow-y-auto bg-white border-gray-200">
                 {searchResults.map((coin) => (
                   <button
                     key={coin.id}
@@ -563,7 +568,7 @@ const Navbar = () => {
                       navigateTo(`/coin/${coin.id}`);
                       clearSearch();
                     }}
-                    className="w-full px-4 py-2 text-left hover:bg-gray-50 flex items-center space-x-3 border-b border-gray-100 last:border-b-0"
+                    className="w-full px-4 py-2 text-left flex items-center space-x-3 border-b last:border-b-0 hover:bg-gray-100 border-gray-200"
                   >
                     <img
                       src={coin.image}
@@ -571,8 +576,12 @@ const Navbar = () => {
                       className="h-5 w-5 rounded-full"
                     />
                     <div>
-                      <div className="font-medium text-sm">{coin.name}</div>
-                      <div className="text-xs text-gray-500">{coin.symbol?.toUpperCase()}</div>
+                      <div className="font-medium text-sm text-gray-700">
+                        {coin.name}
+                      </div>
+                      <div className="text-xs text-gray-500">
+                        {coin.symbol?.toUpperCase()}
+                      </div>
                     </div>
                   </button>
                 ))}
@@ -583,20 +592,32 @@ const Navbar = () => {
 
         {/* Mobile menu */}
         {mobileStates.menuOpen && (
-          <div className="md:hidden border-t border-gray-200 bg-white">
+          <div className="md:hidden border-t bg-white border-gray-200">
             <div className="px-4 py-2 space-y-1">
+              {/* Close button for mobile menu */}
+              <div className="flex justify-between items-center pb-2 mb-2 border-b border-gray-200">
+                <span className="text-sm font-medium text-gray-700">Menu</span>
+                <button
+                  onClick={closeMobileMenu}
+                  className="p-1 rounded-full hover:bg-gray-100 focus:outline-none"
+                  aria-label="Close menu"
+                >
+                  <BiX className="h-5 w-5 text-gray-500" />
+                </button>
+              </div>
+
               {/* Auth section for mobile */}
               {!user && (
-                <div className="pb-2 mb-2 border-b border-gray-200">
+                <div className="pb-2 mb-2 border-gray-200">
                   <Link
                     to="/login"
-                    className="w-full text-left block px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-md"
+                    className="w-full text-left block px-3 py-2 text-sm font-medium rounded-md text-gray-700 hover:bg-gray-100"
                   >
                     Log In
                   </Link>
                   <Link
                     to="/signup"
-                    className="w-full text-left block px-3 py-2 text-sm font-medium text-blue-600 hover:bg-gray-50 rounded-md"
+                    className="w-full text-left block px-3 py-2 text-sm font-medium rounded-md text-blue-600 hover:bg-gray-100"
                   >
                     Sign Up
                   </Link>
@@ -606,65 +627,50 @@ const Navbar = () => {
               {/* Navigation links */}
               <button
                 onClick={() => navigateTo('/cryptocurrencies')}
-                className="w-full text-left block px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-md"
+                className="w-full text-left block px-3 py-2 text-sm font-medium rounded-md text-gray-700 hover:bg-gray-100"
               >
                 Cryptocurrencies
               </button>
               
               {user && (
-                <>
-                  <button
-                    onClick={() => navigateTo('/watchlist')}
-                    className="w-full text-left block px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-md"
-                  >
-                    Watchlist
-                  </button>
-                  <button
-                    onClick={() => navigateTo('/portfolio')}
-                    className="w-full text-left block px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-md"
-                  >
-                    Portfolio
-                  </button>
-                </>
+                <button
+                  onClick={() => navigateTo('/watchlist')}
+                  className="w-full text-left block px-3 py-2 text-sm font-medium rounded-md text-gray-700 hover:bg-gray-100"
+                >
+                  Watchlist
+                </button>
               )}
               
               <button
                 onClick={() => navigateTo('/markets')}
-                className="w-full text-left block px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-md"
+                className="w-full text-left block px-3 py-2 text-sm font-medium rounded-md text-gray-700 hover:bg-gray-100"
               >
                 Markets
-              </button>
-              
-              <button
-                onClick={() => navigateTo('/news')}
-                className="w-full text-left block px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-md"
-              >
-                News
               </button>
 
               {/* User section for mobile */}
               {user && (
-                <div className="border-t border-gray-200 mt-2 pt-2">
+                <div className="mt-2 pt-2 border-gray-200">
                   <button
                     onClick={handleProfile}
-                    className="w-full text-left block px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-md"
+                    className="w-full text-left block px-3 py-2 text-sm font-medium rounded-md text-gray-700 hover:bg-gray-100"
                   >
                     Profile
                   </button>
                   <button
                     onClick={handleSettings}
-                    className="w-full text-left block px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 rounded-md"
+                    className="w-full text-left block px-3 py-2 text-sm font-medium rounded-md text-gray-700 hover:bg-gray-100"
                   >
                     Settings
                   </button>
                   <button
                     onClick={handleLogout}
                     disabled={logoutLoading}
-                    className="w-full text-left block px-3 py-2 text-sm font-medium text-red-600 hover:bg-gray-50 rounded-md flex items-center justify-center"
+                    className="w-full text-left block px-3 py-2 text-sm font-medium rounded-md flex items-center justify-center text-red-600 hover:bg-gray-100"
                   >
                     {logoutLoading ? (
                       <>
-                        <svg className="animate-spin -ml-1 mr-3 h-4 w-4 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <svg className="animate-spin -ml-1 mr-3 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                           <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                           <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                         </svg>

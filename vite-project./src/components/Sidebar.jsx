@@ -22,7 +22,7 @@ const Sidebar = () => {
   const inactiveStyles = "text-gray-600 hover:bg-[hsl(122,39%,30%)] hover:text-white";
 
   return (
-    <nav className="md:w-56 font-primary p-4 border-r border-gray-200 h-screen sticky top-0" aria-label="Main navigation">
+    <nav className="md:w-56 font-primary p-12 border-r border-gray-200 bg-gray-900 h-screen sticky top-0" aria-label="Main navigation">
       <div className="flex flex-col h-full justify-between">
         <ul className="space-y-2">
           {navItems.map((item) => (
@@ -42,15 +42,7 @@ const Sidebar = () => {
           ))}
         </ul>
 
-        <div className="mt-auto">
-          <button
-            className={`${baseLinkStyles} w-full hover:bg-[hsl(122,39%,30%)] hover:text-white text-gray-600`}
-            aria-label="Logout"
-          >
-            <span className="text-xl md:text-lg"><MdLogout /></span>
-            <span className="hidden md:inline">Logout</span>
-          </button>
-        </div>
+       
       </div>
     </nav>
   );
