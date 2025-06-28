@@ -1,42 +1,21 @@
 /** @format */
 /**
  * WatchList.jsx - Shows user's favorited coins
+ * Updated to use shared FavoritesContext
  */
 
 import React, { useContext, useEffect, useState } from "react";
 import { CoinContext } from "../context/CoinContext";
-import { auth } from "../firebase/config";
-import { onAuthStateChanged } from "firebase/auth";
+import { useFavorites } from "../context/FavoritesContext";
 import { useNavigate } from "react-router-dom";
 
 const WatchList = () => {
   const { allCoin, currency } = useContext(CoinContext);
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [favorites, setFavorites] = useState([]);
+  const { user, favorites, toggleFavorite, isFavorite, loading } = useFavorites();
   const [favoriteCoins, setFavoriteCoins] = useState([]);
   const navigate = useNavigate();
 
-  // Check auth state
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-      setLoading(false);
-      
-      if (currentUser) {
-        // Load favorites from memory (in a real app, you'd load from database)
-        // For now, we'll sync with any favorites from Home component
-        // You might want to implement a global favorites context instead
-        setFavorites([]);
-      } else {
-        setFavorites([]);
-      }
-    });
-    
-    return () => unsubscribe();
-  }, []);
-
-  // Filter coins based on favorites
+  // Filter coins based on favorites from the shared context
   useEffect(() => {
     if (allCoin.length > 0 && favorites.length > 0) {
       const filteredCoins = allCoin.filter(coin => favorites.includes(coin.id));
@@ -46,8 +25,8 @@ const WatchList = () => {
     }
   }, [allCoin, favorites]);
 
-  // Toggle favorite function
-  const toggleFavorite = (coinId, e) => {
+  // Toggle favorite function - now uses the shared context
+  const handleToggleFavorite = (coinId, e) => {
     e.stopPropagation();
     
     if (!user) {
@@ -55,15 +34,8 @@ const WatchList = () => {
       return;
     }
 
-    const newFavorites = favorites.includes(coinId)
-      ? favorites.filter(id => id !== coinId)
-      : [...favorites, coinId];
-    
-    setFavorites(newFavorites);
-    // In a real app, you'd save this to your database
+    toggleFavorite(coinId);
   };
-
-  const isFavorite = (coinId) => favorites.includes(coinId);
 
   if (loading) {
     return (
@@ -103,7 +75,7 @@ const WatchList = () => {
             Your WatchList
           </h1>
           <p className="text-gray-300">
-            Track your favorite cryptocurrencies
+            Track your favorite cryptocurrencies ({favorites.length} favorites)
           </p>
         </div>
 
@@ -183,7 +155,7 @@ const WatchList = () => {
                   
                   <div className="col-span-1 flex justify-center">
                     <button
-                      onClick={(e) => toggleFavorite(coin.id, e)}
+                      onClick={(e) => handleToggleFavorite(coin.id, e)}
                       className="p-1 hover:bg-gray-600 rounded transition-colors"
                       title="Remove from watchlist"
                     >
@@ -214,7 +186,7 @@ const WatchList = () => {
                     </div>
                     
                     <button
-                      onClick={(e) => toggleFavorite(coin.id, e)}
+                      onClick={(e) => handleToggleFavorite(coin.id, e)}
                       className="p-2 hover:bg-gray-600 rounded transition-colors"
                       title="Remove from watchlist"
                     >

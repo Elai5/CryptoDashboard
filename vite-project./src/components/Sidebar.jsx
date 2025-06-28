@@ -4,7 +4,6 @@ import { HiOutlineStar } from "react-icons/hi2";
 import { PiBellRinging } from "react-icons/pi";
 import { LuWallet, LuSettings } from "react-icons/lu";
 import { TbLayoutDashboard } from "react-icons/tb";
-import { MdLogout } from "react-icons/md";
 import { NavLink } from "react-router-dom";
 
 const Sidebar = () => {
@@ -22,8 +21,8 @@ const Sidebar = () => {
   const inactiveStyles = "text-gray-600 hover:bg-[hsl(122,39%,30%)] hover:text-white";
 
   return (
-    <nav className="md:w-56 font-primary p-12 border-r border-gray-200 bg-gray-900 h-screen sticky top-0" aria-label="Main navigation">
-      <div className="flex flex-col h-full justify-between">
+    <nav className="md:w-56 font-primary p-10 border-r border-gray-200 bg-gray-900 h-screen sticky w-3 top-0" aria-label="Main navigation">
+      <div className="flex flex-col h-full justify-between items-center">
         <ul className="space-y-2">
           {navItems.map((item) => (
             <li key={item.path}>
