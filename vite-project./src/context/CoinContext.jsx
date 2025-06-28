@@ -7,7 +7,7 @@
  * Shares coin data and currency state via React context to be consumed by child components.
  * from coingecko site
  */
-
+import React from "react";
 
 import { createContext, useEffect, useState } from "react";
 

@@ -1,129 +1,47 @@
-/** @format */
-/**
- * Sidebar component that renders the main navigation menu.
- * Uses NavLink to dynamically highlight the active route.
- * Responsive design: Icons always visible, text hidden on smaller screens.
- */
-
 import React from "react";
 import { BsGraphUp } from "react-icons/bs";
-import { MdLogout } from "react-icons/md";
-import { LuWallet } from "react-icons/lu";
-import { TbLayoutDashboard } from "react-icons/tb";
 import { HiOutlineStar } from "react-icons/hi2";
 import { PiBellRinging } from "react-icons/pi";
-import { LuSettings } from "react-icons/lu";
-import { Link } from "react-router-dom";
+import { LuWallet, LuSettings } from "react-icons/lu";
+import { TbLayoutDashboard } from "react-icons/tb";
 import { NavLink } from "react-router-dom";
 
 const Sidebar = () => {
-  // Shared styles for NavLinks to keep styling consistent across routes
-  const baseLinkStyles =
-    "flex items-center gap-2 py-2 px-1 rounded text-2xl md:text-base";
+  const navItems = [
+    { path: "/", icon: <TbLayoutDashboard />, label: "Dashboard" },
+    { path: "/market", icon: <BsGraphUp />, label: "Market" },
+    { path: "/portfolio", icon: <LuWallet />, label: "Portfolio" },
+    { path: "/watchlist", icon: <HiOutlineStar />, label: "Watchlist" },
+    { path: "/alerts", icon: <PiBellRinging />, label: "Alerts" },
+    { path: "/settings", icon: <LuSettings />, label: "Settings" },
+  ];
+
+  const baseLinkStyles = "flex items-center gap-3 py-3 px-4 rounded-lg transition-all";
+  const activeStyles = "bg-[hsl(122,39%,49%)] text-white font-semibold";
+  const inactiveStyles = "text-gray-600 hover:bg-[hsl(122,39%,30%)] hover:text-white";
+
   return (
-    <nav className="md:w-50 p-3 border-1 border-gray-300 rounded mt-10 h-screen ">
-      <div className="flex flex-col justify-between">
-        <ul className="flex flex-col gap-1 hover:cursor-pointer text-base w-full">
-          <li className="flex items-center  text-white  hover:text-white  rounded hover:font-bold">
-            <NavLink
-              to="/"
-              className={({ isActive }) =>
-                isActive
-                  ? baseLinkStyles +
-                    " bg-[hsl(122,39%,49%)] text-white font-bold w-full"
-                  : baseLinkStyles +
-                    " text-gray-700 hover:bg-[hsl(122,39%,49%)] hover:text-white"
-              }
-              end
-            >
-              <TbLayoutDashboard />
-              <span className="hidden md:flex">Dashboard</span>
-            </NavLink>
-          </li>
-          <li className="flex items-center hover:bg-[hsl(122,39%,49%)]  hover:text-white  rounded hover:font-bold">
-            <NavLink
-              to="/market"
-              className={({ isActive }) =>
-                isActive
-                  ? baseLinkStyles +
-                    " bg-[hsl(122,39%,49%)] text-white font-bold w-full"
-                  : baseLinkStyles +
-                    " text-gray-700 hover:bg-[hsl(122,39%,49%)] hover:text-white"
-              }
-            >
-              <BsGraphUp />
-              <span className="hidden md:flex">Market</span>
-            </NavLink>
-          </li>
-          <li className="flex items-center hover:bg-[hsl(122,39%,49%)] hover:text-white rounded hover:font-bold ">
-            <NavLink
-              to="/portfolio"
-              className={({ isActive }) =>
-                isActive
-                  ? baseLinkStyles +
-                    " bg-[hsl(122,39%,49%)] text-white font-bold w-full"
-                  : baseLinkStyles +
-                    " text-gray-700 hover:bg-[hsl(122,39%,49%)] hover:text-white"
-              }
-            >
-              <LuWallet />
-              <span className="hidden md:flex">Portfolio</span>
-            </NavLink>
-          </li>
-          <li className="flex items-center  hover:bg-[hsl(122,39%,49%)]  hover:text-white  rounded hover:font-bold">
-            <NavLink
-              to="/watchlist"
-              className={({ isActive }) =>
-                isActive
-                  ? baseLinkStyles +
-                    " bg-[hsl(122,39%,49%)] text-white font-bold w-full"
-                  : baseLinkStyles +
-                    " text-gray-700 hover:bg-[hsl(122,39%,49%)] hover:text-white"
-              }
-            >
-              <HiOutlineStar />
-              <span className="hidden md:flex">Watchlist</span>
-            </NavLink>
-          </li>
-          <li className="flex items-center hover:bg-[hsl(122,39%,49%)]  hover:text-white  rounded hover:font-bold">
-            <NavLink
-              to="/alerts"
-              className={({ isActive }) =>
-                isActive
-                  ? baseLinkStyles +
-                    " bg-[hsl(122,39%,49%)] text-white font-bold w-full"
-                  : baseLinkStyles +
-                    " text-gray-700 hover:bg-[hsl(122,39%,49%)] hover:text-white"
-              }
-            >
-              <PiBellRinging />
-              <span className="hidden md:flex">Alerts</span>
-            </NavLink>
-          </li>
-          <li className="flex items-center hover:bg-[hsl(122,39%,49%)]  hover:text-white rounded hover:font-bold">
-            <NavLink
-              to="/settings"
-              className={({ isActive }) =>
-                isActive
-                  ? baseLinkStyles +
-                    " bg-[hsl(122,39%,49%)] text-white font-bold w-full"
-                  : baseLinkStyles +
-                    " text-gray-700 hover:bg-[hsl(122,39%,49%)] hover:text-white"
-              }
-            >
-              <LuSettings />
-              <span className="hidden md:flex">Settings</span>
-            </NavLink>
-          </li>
-          <button
-            type="submit"
-            className="flex items-center gap-2 py-2 px-1 hover:text-white hover:bg-[hsl(122,39%,49%)] rounded text-2xl md:text-base"
-          >
-            <MdLogout />{" "}
-            <span className="hidden md:flex text-gray-700">Logout</span>
-          </button>
+    <nav className="md:w-56 font-primary p-10 border-r border-gray-200 bg-gray-900 h-screen sticky w-3 top-0" aria-label="Main navigation">
+      <div className="flex flex-col h-full justify-between items-center">
+        <ul className="space-y-2">
+          {navItems.map((item) => (
+            <li key={item.path}>
+              <NavLink
+                to={item.path}
+                end
+                className={({ isActive }) =>
+                  `${baseLinkStyles} ${isActive ? activeStyles : inactiveStyles}`
+                }
+                aria-current={({ isActive }) => isActive ? "page" : undefined}
+              >
+                <span className="text-xl md:text-lg">{item.icon}</span>
+                <span className="hidden md:inline">{item.label}</span>
+              </NavLink>
+            </li>
+          ))}
         </ul>
-        <div></div>
+
+       
       </div>
     </nav>
   );
